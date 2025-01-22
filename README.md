@@ -7,5 +7,13 @@ This will be a Software and ML/DL project.
 1. Folder containing UML diagrams
 2. Folder containing Project files  
 
+# Requirements :
+Activate your env.
+1. pip install flask
 
+
+# To run app :
+1. Open repository dictionary in cmd
+2. cd '.\Project Files\flask_app'
+3. flask run
 
