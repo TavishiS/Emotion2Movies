@@ -9,11 +9,9 @@ We will recommend movie on the basis of your emotions:)
 
 # Requirements :
 Activate your env.
-1. pip install flask
-
+1. 'pip install flask' (for Web application)
+2. 'pip install ray' (for parallel computation with CPU)
 
 # To run app :
-1. Open repository dictionary in cmd
-2. cd '.\Project Files\flask_app'
-3. flask run
-
+1. Install all requirements
+2. run 'app.py' (relative path : "\Project Files\flask_app\app.py")
