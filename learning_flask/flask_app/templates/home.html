@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Emotion2Movie</title>
+  </head>
+  <body>
+    <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Emotion2User</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Features</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Pricing</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown link
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="/">Action</a></li>
+                  <li><a class="dropdown-item" href="/">Another action</a></li>
+                  <li><a class="dropdown-item" href="/">Something else here</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="p-5 container">
+        <form action='/movie' method="POST">
+            <div class="row mb-3">
+              <label for="inputmovie1" class="col-sm-2 col-form-label" >Movie pref 1</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputmovie1" name="movie1">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputmovie2" class="col-sm-2 col-form-label" >Movie pref 2</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputmovie2" name="movie2">
+              </div>
+            </div>
+            <fieldset name='option' class="row mb-3">
+              <legend class="col-form-label col-sm-2 pt-0">Select your mood:</legend>
+              <div class="col-sm-10">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="option" id="gridRadios1" value="option1" checked>
+                  <label class="form-check-label" for="gridRadios1">
+                    Happyyyy
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="option" id="gridRadios2" value="sad">
+                  <label class="form-check-label" for="gridRadios2">
+                    Sad
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="option" id="gridRadios3" value="angry">
+                  <label class="form-check-label" for="gridRadios3">
+                    Angry
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="option" id="gridRadios3" value="random">
+                  <label class="form-check-label" for="gridRadios3">
+                    Any random movie
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary">submit</button>
+          </form>   
+    </div>
+    <div>
+      <form action='/update_data' method='POST'><button type="submit" class="btn btn-warning">Update data</button></form>
+    </div>
+    <div>
+    <table class="table" >
+      <thead class="thead">
+      <tr>
+          <th>Sno</th>
+          <th>movie1</th>
+          <th>movie2</th>
+          <th>option</th>
+          <th>date_created<th>
+      </tr>
+      </thead>
+      
+      {% for datapoint in allPosts %}
+          <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ datapoint.movie1 }}</td>
+              <td>{{ datapoint.movie2 }}</td>
+              <td>{{ datapoint.option }}</td>
+              <td>{{ datapoint.date_created }}</td>
+              <td>
+                <form action='/deleterow/{{datapoint.sno}}' method='POST'><button type="submit" class="btn btn-danger">Delete</button></form>
+              </td>
+          </tr>
+      {% endfor %}
+    </table>
+    </div>
+    
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
