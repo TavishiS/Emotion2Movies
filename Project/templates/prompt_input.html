@@ -61,11 +61,13 @@
 			<form>
 				<div class="form-group">
 					<label for="prompt">Enter a string prompt to generate a movie name:</label>
-					<input type="text" id="prompt" name="prompt" placeholder="e.g. 'space adventure' or 'romantic comedy'">
+					<input type="text" id="prompt" name="prompt" placeholder="e.g. 'space adventure' or 'romantic comedy'" required="required">
 				</div>
-				<button class="button" type="submit">Generate Movie Name</button>
+				<button class="button" type="submit">Submit prompt</button>
+				<button class="button" onclick="window.location.href='recommendations'">Generate Movies</button>
 			</form>
 		</div>
+
 	</div>
 </body>
 </html>
