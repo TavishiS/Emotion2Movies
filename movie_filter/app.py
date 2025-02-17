@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
-CORS(app)
+CORS(app)  # This line enables Cross-Origin Resource Sharing (CORS) for the Flask app, allowing resources to be requested from another domain.
 
 TMDB_API_KEY = "08f754591935e3223e64fe37680f7ba0"
 
@@ -19,6 +19,10 @@ def get_movie_trailer(movie_id):
     except Exception as e:
         print(f"Error fetching trailer: {e}")
         return None
+    
+@app.route('/', methods=['GET'])
+def firstPage():
+    return render_template('index.html')
 
 @app.route('/recommend', methods=['GET'])
 def recommend_movies():
