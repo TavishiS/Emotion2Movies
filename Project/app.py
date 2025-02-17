@@ -40,7 +40,7 @@ def home():
 def form_input():
     return render_template('form_input.html')
 
-@app.route('/recommend', methods=['GET'])
+@app.route('/recommend_form', methods=['GET'])
 def recommend_movies():
     # Get parameters from query string
     genre = request.args.get("genre", "")
