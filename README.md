@@ -12,11 +12,22 @@ We will recommend movie on the basis of your emotions :)
 # Requirements :
 Activate your env.
 1. 'pip install flask' (for Web application)
-2. 'pip install -U Flask-SQLAlchemy' (for local database)
+2. 'pip install -U Flask-SQLAlchemy' (for local database (if you want to use that))
 3. 'pip install ray' (for parallel computation with CPU)
 
 # To run app :
 1. clone repository
-2. Install all requirements
+2. Install requirements.txt
 3. open repository directory 
-4. run 'app.py' (relative path : "\Project\app.py")
+4. run 'app.py' (relative path to nevigate : "\Project\app.py")
+
+# How we run this : 
+1. created AWS EC2 instance.
+2. created dir and cloned this repo
+3. created vertual python environment
+4. installed requirements.txt via "pip install -r requirements.txt"
+5. install gunicorn
+6. run command "gunicorn -b 0.0.0.0:5000 app:app"
+7. now gunicorn will start website at our EC2's local server which is available for us at public address of our EC2
+8. link for website : [link](http://16.16.215.95:5000/) 
+note : website will be live when we start from our side  :)
