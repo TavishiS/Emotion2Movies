@@ -24,10 +24,11 @@ Activate your env.
 # How we run this : 
 1. created AWS EC2 instance.
 2. created dir and cloned this repo
-3. created vertual python environment
+3. created vertual python environment in ./Emotion2Movies/Project via "python3 -m venv SE_env"
+4. activate SE_env via "source SE_env/bin/activate"
 4. installed requirements.txt via "pip install -r requirements.txt"
-5. install gunicorn
+5. install gunicorn via "pip install gunicorn" (works for Ubuntu/linux etc)
 6. run command "gunicorn -b 0.0.0.0:5000 app:app"
 7. now gunicorn will start website at our EC2's local server which is available for us at public address of our EC2
-8. link for website : [http://public_ip_of_aws_instance:5000/](http://13.60.224.246/) 
+8. link for website : [http://public_ip_of_aws_instance:5000/](http://13.60.224.246:5000) 
 note : website will be live when we start from our side  :)
