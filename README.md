@@ -29,5 +29,5 @@ Activate your env.
 5. install gunicorn
 6. run command "gunicorn -b 0.0.0.0:5000 app:app"
 7. now gunicorn will start website at our EC2's local server which is available for us at public address of our EC2
-8. link for website : [link](http://16.16.215.95:5000/) 
+8. link for website : [http://public_ip_of_aws_instance:5000/](http://13.60.224.246/) 
 note : website will be live when we start from our side  :)

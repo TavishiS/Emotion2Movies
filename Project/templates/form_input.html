@@ -129,7 +129,7 @@
             const minDuration = document.getElementById("minDuration").value;
             const maxDuration = document.getElementById("maxDuration").value;
 
-            const url = `http://127.0.0.1:5000/recommend_form?genre=${genre}&language=${language}&minRating=${minRating}&maxRating=${maxRating}&startYear=${startYear}&endYear=${endYear}&minDuration=${minDuration}&maxDuration=${maxDuration}`;
+            const url = `/recommend_form?genre=${genre}&language=${language}&minRating=${minRating}&maxRating=${maxRating}&startYear=${startYear}&endYear=${endYear}&minDuration=${minDuration}&maxDuration=${maxDuration}`;
 
             try {
                 const response = await fetch(url);
