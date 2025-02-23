@@ -2,3 +2,4 @@ trial_error
 local_main.py
 __pycache__/
 .venv
+SE_env
