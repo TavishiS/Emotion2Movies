@@ -9,12 +9,6 @@ We will recommend movie on the basis of your emotions :)
 3. Folder "instance" containing local database (sql-lite)
 4. Folder "learning" containing things that are created just for understanding new tools and technology
 
-# Requirements :
-Activate your env.
-1. 'pip install flask' (for Web application)
-2. 'pip install -U Flask-SQLAlchemy' (for local database (if you want to use that))
-3. 'pip install ray' (for parallel computation with CPU)
-
 # To run app :
 1. clone repository
 2. Install requirements.txt
@@ -23,7 +17,7 @@ Activate your env.
 
 # How we run this : 
 1. created AWS EC2 instance.
-2. created dir and cloned this repo
+2. created dir "project" and cloned this repo in that dir
 3. created vertual python environment in ./Emotion2Movies/Project via "python3 -m venv SE_env"
 4. activate SE_env via "source SE_env/bin/activate"
 5. installed requirements.txt via "pip install -r requirements.txt"
