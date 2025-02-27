@@ -24,5 +24,5 @@ We will recommend movie on the basis of your emotions :)
 6. install gunicorn via "pip install gunicorn" (works for Ubuntu/linux etc)
 7. run command "gunicorn -b 0.0.0.0:5000 app:app"
 8. now gunicorn will start website at our EC2's local server which is available for us at public address of our EC2
-9. link for website : [http://public_ip_of_aws_instance:5000/](http://13.60.224.246:5000/) 
+9. link for website : [http://public_ip_of_aws_instance:5000/](http://13.60.73.59:5000/) 
 note : website will be live when we start from our side  :)
