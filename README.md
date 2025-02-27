@@ -24,7 +24,7 @@ We will recommend movie on the basis of your emotions :)
 4. activate SE_env via "source SE_env/bin/activate"
 5. installed requirements.txt via "pip install -r requirements.txt"
 6. install gunicorn via "pip install gunicorn" (works for Ubuntu/linux etc)
-7. run command "gunicorn -b 0.0.0.0:5000 app:app" to start app
+7. run command "gunicorn --timeout 60 -b 0.0.0.0:5000 app:app" to start app (using --timeout of 60 sec to prevent error due to timeout, default timeout is 30sec)
 9. now gunicorn will start website at our EC2's local server which is available for us at public address of our EC2
 10. link for website : [http://public_ip_of_aws_instance:5000/](http://13.60.73.59:5000/) 
 note : website will be live when we start from our side  :)
