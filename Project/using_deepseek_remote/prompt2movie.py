@@ -1,5 +1,6 @@
 from openai import OpenAI
-from myChatApi import myKey
+myKey="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"
+
 def give3movies(prompt):
   client = OpenAI(
     base_url="https://openrouter.ai/api/v1",

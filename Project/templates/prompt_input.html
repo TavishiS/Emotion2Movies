@@ -58,13 +58,12 @@
 			<h1>Movie Name Generator</h1>
 		</div>
 		<div class="form">
-			<form>
+			<form action="/prompt_generate" method="POST">
 				<div class="form-group">
 					<label for="prompt">Enter a string prompt to generate a movie name:</label>
 					<input type="text" id="prompt" name="prompt" placeholder="e.g. 'space adventure' or 'romantic comedy'" required="required">
 				</div>
-				<button class="button" type="submit">Submit prompt</button>
-				<button class="button" onclick="window.location.href='recommendations'">Generate Movies</button>
+				<button class="button" type="submit">Generate Movies</button>
 			</form>
 		</div>
 

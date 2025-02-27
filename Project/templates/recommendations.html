@@ -47,20 +47,14 @@
 			<table>
 				<tr>
 					<th>Movie Name</th>
-					<th>URL</th>
+					<th>YouTube trailer URL</th>
 				</tr>
+				{% for movie, trailer in movies_urls %}
 				<tr>
-					<td>Inception</td>
-					<td><a href="https://www.imdb.com/title/tt1375666/">https://www.imdb.com/title/tt1375666/</a></td>
+					<td>{{ movie }}</td>
+					<td><a href="{{ trailer }}">{{ trailer }}</a></td>
 				</tr>
-				<tr>
-					<td>Interstellar</td>
-					<td><a href="https://www.imdb.com/title/tt0816692/">https://www.imdb.com/title/tt0816692/</a></td>
-				</tr>
-				<tr>
-					<td>The Matrix</td>
-					<td><a href="https://www.imdb.com/title/tt0133093/">https://www.imdb.com/title/tt0133093/</a></td>
-				</tr>
+				{% endfor %}
 			</table>
 		</div>
 	</div>

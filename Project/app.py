@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
+from using_deepseek_remote import prompt2movie
 import requests
 
 app=Flask(__name__)
@@ -89,9 +90,17 @@ def recommend_movies():
 def prompt_input():
     return render_template('prompt_input.html')
 
-@app.route('/recommendations')
-def recommandetions():
-    return render_template('recommendations.html')
+@app.route('/prompt_generate', methods=['GET','POST'])
+def prompt_generate():
+    prompt_in = request.form['prompt']
+    print(prompt_in)
+    movie_names = prompt2movie.give3movies(prompt=prompt_in)
+    trailer_urls = []
+    print(movie_names)
+    for movie_name in movie_names:
+        trailer_url = f"https://www.youtube.com/results?search_query=trailer+%3A+{movie_name}"
+        trailer_urls.append(trailer_url)
+    return render_template('recommendations.html', movies_urls=zip(movie_names, trailer_urls))
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5000)
