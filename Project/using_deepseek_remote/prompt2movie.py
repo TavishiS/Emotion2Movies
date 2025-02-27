@@ -21,10 +21,10 @@ def give3movies(prompt):
     ]
   )
   output = completion.choices[0].message.content
+  print(output)
   output=output.split(",")
   return output
 
 if __name__ == "__main__":
   prompt="hindi movie funny scary."
   output=give3movies(prompt=prompt)
-  print(output)
