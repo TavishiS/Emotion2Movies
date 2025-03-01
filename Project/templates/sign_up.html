@@ -57,8 +57,18 @@
 		<div class="header">
 			<h1>Sign Up</h1>
 		</div>
+		<div>
+			{% with messages = get_flashed_messages(with_categories=True) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					<div class="flash-message {{ category }}">{{ message }}</div>
+				{% endfor %}
+			{% endif %}
+			{% endwith %}
+		</div>
+
 		<div class="form">
-			<form>
+			<form action="/signup" method="POST">
 				<div class="form-group">
 					<label for="username">Username:</label>
 					<input type="text" id="username" name="username" required>
@@ -70,10 +80,6 @@
 				<div class="form-group">
 					<label for="password">Password:</label>
 					<input type="password" id="password" name="password" required>
-				</div>
-				<div class="form-group">
-					<label for="confirm-password">Confirm Password:</label>
-					<input type="password" id="confirm-password" name="confirm-password" required>
 				</div>
 				<button class="button" type="submit">Sign Up</button>
 			</form>

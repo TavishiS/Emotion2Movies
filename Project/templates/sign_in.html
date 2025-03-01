@@ -50,7 +50,16 @@
 <body>
 	<div class="container">
 		<h2>Sign In</h2>
-		<form>
+		<div>
+			{% with messages = get_flashed_messages(with_categories=True) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					<div class="flash-message {{ category }}">{{ message }}</div>
+				{% endfor %}
+			{% endif %}
+			{% endwith %}
+		</div>
+		<form action="/signin" method="post">
 			<div class="form-group">
 				<label for="username">Username:</label>
 				<input type="text" id="username" name="username" required>
