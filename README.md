@@ -8,6 +8,7 @@ We will recommend movie on the basis of your emotions :)
 2. Folder "Project" containing Project files
 3. Folder "instance" containing local database (sql-lite)
 4. Folder "learning" containing things that are created just for understanding new tools and technology
+5. Folder "MoM" to store Minutes of the Meetings on a regular basis
 
 # To run app :
 1. clone repository
@@ -24,9 +25,20 @@ We will recommend movie on the basis of your emotions :)
 4. activate SE_env via "source SE_env/bin/activate"
 5. installed requirements.txt via "pip install -r requirements.txt"
 6. install gunicorn via "pip install gunicorn" (works for Ubuntu/linux etc)
-7. run command "gunicorn --timeout 60 -b 0.0.0.0:5000 app:app" to start app (using --timeout of 60 sec to prevent error due to timeout, default timeout is 30sec)
+7. run command "nohup gunicorn -b 0.0.0.0:5000 -w 4 -k gevent app:app >/dev/null 2>&1 &" to start app (using -w for set number of workers, -k for set type of worker (gevent is very good for handeling multiple requests like hundreds of requests per worker))
 9. now gunicorn will start website at our EC2's local server which is available for us at public address of our EC2
-10. link for website : [http://public_ip_of_aws_instance:5000/](http://13.60.73.59:5000/) 
+10. link for website : [http://public_ip_of_aws_instance:5000/](http://13.53.89.57:5000/) 
 note : website will be live when we start from our side  :)
 11. to check which processes are running on your ubuntu machine; run command "top -U \<specific user\>"
-12. to stop gunicorn; run command "sudo killall gunicorn"
+12. to stop gunicorn; run command "pkill gunicorn"
+
+# Why while gunicorn :
+***nohup*** Keeps the process running even after logout so Useful when running on a remote server via SSH.
+
+***-b*** : to bind all allowed ip's
+
+***-w*** : to set number of workers
+
+***-k gevent*** : to set type of workers to "gevent" that can handle hundreds of requests per worker
+
+***>/dev/null 2>&1 &*** :	Suppresses all logs & runs in background
