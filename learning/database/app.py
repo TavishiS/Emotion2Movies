@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 import certifi
+import bcrypt
 
 app = Flask(__name__)
 
@@ -11,9 +12,13 @@ db = client["Users"]  # Database
 credentials_collection = db["credentials"]  # Collection
 
 # ✅ Home Route (Renders Signup Page)
-@app.route('/')
-def home():
-    return render_template('index.html')
+@app.route('/sign_up')
+def sign_up_page():
+    return render_template('sign_up.html')
+
+@app.route('/sign_in')
+def  sign_in_page():
+    return render_template('sign_in.html')
 
 # ✅ Signup Route (Handles Form Submission)
 @app.route('/signup', methods=['POST'])
@@ -31,9 +36,8 @@ def signup():
 
         if existing_user:
             return jsonify({"message": "Username or email already registered!"})  # You can also render an error message in HTML
-
-        # ✅ Insert into MongoDB
-        user_data = {"username": username, "email": email, "password": password}
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        user_data = {"username": username, "email": email, "password": hashed_password.decode('utf-8')}
         credentials_collection.insert_one(user_data)
 
         return jsonify({"message": "User registered successfully!"})
@@ -42,13 +46,13 @@ def signup():
         return jsonify({"message": "Database error!", "error": str(e)}), 500
 
 # ✅ Test MongoDB Connection (To check if MongoDB is working)
-@app.route('/test-db')
-def test_db():
-    try:
-        credentials_collection.insert_one({"username": "test", "email": "test@test.com", "password": "test"})
-        return "MongoDB Connection Successful! Test user added."
-    except Exception as e:
-        return f"MongoDB Error: {str(e)}"
+# @app.route('/test-db')
+# def test_db():
+#     try:
+#         credentials_collection.insert_one({"username": "test", "email": "test@test.com", "password": "test"})
+#         return "MongoDB Connection Successful! Test user added."
+#     except Exception as e:
+#         return f"MongoDB Error: {str(e)}"
 
 if __name__ == '__main__':
     # app.run(debug=True)
