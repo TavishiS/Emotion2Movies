@@ -3,3 +3,4 @@ local_main.py
 __pycache__/
 .venv
 SE_env
+env
