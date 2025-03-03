@@ -3,13 +3,72 @@ from flask_cors import CORS
 import requests
 import prompt2movie, form2movie
 import sign_up_in
+import flask_login
 
 app=Flask(__name__)
-CORS(app)  # This line enables Cross-Origin Resource Sharing (CORS) for the Flask app, allowing resources to be requested from another domain.
+CORS(app)
+app.secret_key = 'SE_project'  # Change this to your secret key
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+users = {} # Dictionary to store user information {username: password}
+class User(flask_login.UserMixin):
+    def __init__(self,username):
+        self.name = username
+        self.email= None
+        self.password = None
+        self.movies_watched = None #this will be array
+    pass
 
-app.secret_key = 'your_secret_key'  # Change this to your secret key
+@login_manager.user_loader
+def user_loader(username):  #this will be more related to our project
+    if username not in users:
+        return
+    user = User(username)
+    return user
 
-user_name = ""
+@login_manager.request_loader # mainly used for API authentication
+def request_loader(request): 
+    username = request.form.get('username')
+    if username not in users:
+        return
+    user = User(username)
+    return user
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return '''
+               <form action='login' method='POST'>
+                <input type='text' name='email' id='email' placeholder='email'/>
+                <input type='password' name='password' id='password' placeholder='password'/>
+                <input type='submit' name='submit'/>
+               </form>
+               '''
+
+    email = request.form['email']
+    if email in users and request.form['password'] == users[email]['password']:
+        user = User()
+        user.id = email
+        flask_login.login_user(user)
+        return redirect(url_for('protected'))
+
+    return 'Bad login'
+
+
+@app.route('/protected')
+@flask_login.login_required
+def protected():
+    return 'Logged in as: ' + flask_login.current_user.id
+
+@app.route('/logout')
+def logout():
+    flask_login.logout_user()
+    return 'Logged out'
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return 'Unauthorized', 401
+
 
 @app.route('/')
 def firstPage():

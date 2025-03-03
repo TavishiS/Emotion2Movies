@@ -12,7 +12,7 @@ def give3movies(prompt):
   #     "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
   #   },
   #   extra_body={},
-    model="deepseek/deepseek-r1-distill-llama-70b:free",
+    model="deepseek/deepseek-chat:free",
     messages=[
       {
         "role": "user",
@@ -26,5 +26,6 @@ def give3movies(prompt):
   return output
 
 if __name__ == "__main__":
-  prompt="hindi movie funny scary."
+  prompt="sleep fun jump wrong paper."
   output=give3movies(prompt=prompt)
+  print(output)
