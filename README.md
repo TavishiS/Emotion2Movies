@@ -8,6 +8,7 @@ We will recommend movie on the basis of your emotions :)
 2. Folder "Project" containing Project files
 3. Folder "instance" containing local database (sql-lite)
 4. Folder "learning" containing things that are created just for understanding new tools and technology
+5. Folder "MoM" to store Minutes of the Meetings on a regular basis
 
 # To run app :
 1. clone repository
