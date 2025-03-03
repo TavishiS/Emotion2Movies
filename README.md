@@ -24,7 +24,7 @@ We will recommend movie on the basis of your emotions :)
 4. activate SE_env via "source SE_env/bin/activate"
 5. installed requirements.txt via "pip install -r requirements.txt"
 6. install gunicorn via "pip install gunicorn" (works for Ubuntu/linux etc)
-7. run command "nohup gunicorn -b 0.0.0.0:5000 -w 4 -k gevent app:app" to start app (using -w for set number of workers, -k for set type of worker (gevent is very good for handeling multiple requests like hundreds of requests per worker))
+7. run command "nohup gunicorn -b 0.0.0.0:5000 -w 4 -k gevent app:app >/dev/null 2>&1 &" to start app (using -w for set number of workers, -k for set type of worker (gevent is very good for handeling multiple requests like hundreds of requests per worker))
 9. now gunicorn will start website at our EC2's local server which is available for us at public address of our EC2
 10. link for website : [http://public_ip_of_aws_instance:5000/](http://13.53.89.57:5000/) 
 note : website will be live when we start from our side  :)
