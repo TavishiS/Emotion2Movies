@@ -21,7 +21,10 @@ def display_data():
     print("\nTotal users: ",i,"\n")
     print("-------------------------------------------------------")
     # Close the connection
-    client.close()
-
+    
 if __name__ == "__main__":
+    #collection.delete_one({"username": "shree123"}) #delete a user if found
+    #collection.delete_many({}) # to delte all users
     display_data()
+    
+    

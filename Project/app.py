@@ -1,94 +1,48 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
 from flask_cors import CORS
-import requests
-import prompt2movie, form2movie
 import sign_up_in
 import flask_login
+import pymongo
+import prompt2movie, form2movie, userDatabase
 
 app=Flask(__name__)
 CORS(app)
 app.secret_key = 'SE_project'  # Change this to your secret key
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
-users = {} # Dictionary to store user information {username: password}
+
 class User(flask_login.UserMixin):
     def __init__(self,username):
-        self.name = username
-        self.email= None
-        self.password = None
-        self.movies_watched = None #this will be array
-    pass
+        self.id=username
+        self.email = userDatabase.collection.find_one({"username": username})['email']
+        self.password = userDatabase.collection.find_one({"username": username})['password']
+        self.wishlist = userDatabase.collection.find_one({"username": username})['wishlist']
 
 @login_manager.user_loader
 def user_loader(username):  #this will be more related to our project
-    if username not in users:
-        return
+    #users = userDatabase.collection.find_one({"username": username})
+    if not userDatabase.collection.find_one({"username": username}):
+        return None
     user = User(username)
     return user
 
 @login_manager.request_loader # mainly used for API authentication
 def request_loader(request): 
+    #users = userDatabase.collection.find_one({"username": username})
     username = request.form.get('username')
-    if username not in users:
-        return
+    if not userDatabase.collection.find_one({"username": username}):
+        return None
     user = User(username)
     return user
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'GET':
-        return '''
-               <form action='login' method='POST'>
-                <input type='text' name='email' id='email' placeholder='email'/>
-                <input type='password' name='password' id='password' placeholder='password'/>
-                <input type='submit' name='submit'/>
-               </form>
-               '''
-
-    email = request.form['email']
-    if email in users and request.form['password'] == users[email]['password']:
-        user = User()
-        user.id = email
-        flask_login.login_user(user)
-        return redirect(url_for('protected'))
-
-    return 'Bad login'
-
-
-@app.route('/protected')
-@flask_login.login_required
-def protected():
-    return 'Logged in as: ' + flask_login.current_user.id
-
-@app.route('/logout')
-def logout():
-    flask_login.logout_user()
-    return 'Logged out'
-
-@login_manager.unauthorized_handler
-def unauthorized_handler():
-    return 'Unauthorized', 401
-
 
 @app.route('/')
 def firstPage():
     return render_template('about.html')
 
-@app.route('/sign_in')
-def sign_in():
-    return render_template('sign_in.html')
+@app.route('/home_guest')
+def home():
+    return render_template('home_guest.html')
 
-@app.route('/signin', methods=['GET','POST'])
-def call_signin():
-    return_mess=sign_up_in.signin()
-    return_mess_data = return_mess.get_json()
-    message = return_mess_data.get('message', '')
-    if return_mess_data.get('message')=='User logged in successfully!':
-        print(message)
-        return redirect(url_for('home'))
-    else:
-        flash(message, 'error')
-        return redirect(url_for('sign_in'))
 @app.route('/sign_up')
 def sign_up():
     return render_template('sign_up.html')
@@ -104,18 +58,38 @@ def call_signup():
     else:
         flash(message, 'error')
         return redirect(url_for('sign_up'))
-    
-    
 
-@app.route('/home')
-def home():
-    return render_template('home.html')
+@app.route('/sign_in')
+def sign_in():
+    return render_template('sign_in.html')
+
+@app.route('/signin', methods=['GET', 'POST'])
+def login():
+    signin_message = sign_up_in.signin()
+    signin_message_data = signin_message.get_json()
+    if signin_message_data.get('message')=='bad login':
+        return 'Bad login'
+    if signin_message_data.get('message')=='User logged in successfully!':
+        username = request.form.get('username')
+        user = User(username)
+        flask_login.login_user(user)
+        return redirect(url_for('protected'))
+    else:
+        flash(signin_message_data.get('message'), 'error')
+        return redirect(url_for('sign_in'))
+    
+@app.route('/home_user')
+@flask_login.login_required
+def protected():
+    return render_template('home_user.html', user=flask_login.current_user)
 
 @app.route('/form_input')
+@flask_login.login_required
 def form_input():
     return render_template('form_input.html')
 
 @app.route('/recommend_form', methods=['GET'])
+@flask_login.login_required
 def recommend_movies():
     # Get parameters from query string
     genre = request.args.get("genre", "")
@@ -131,10 +105,12 @@ def recommend_movies():
     
 
 @app.route('/prompt_input')
+@flask_login.login_required
 def prompt_input():
-    return render_template('prompt_input.html')
+    return render_template('prompt_input.html',user=flask_login.current_user)
 
 @app.route('/prompt_generate', methods=['GET','POST'])
+@flask_login.login_required
 def prompt_generate():
     prompt_in = request.form['prompt']
     print(prompt_in)
@@ -145,6 +121,16 @@ def prompt_generate():
         trailer_url = f"https://www.youtube.com/results?search_query=trailer+%3A+{movie_name}"
         trailer_urls.append(trailer_url)
     return render_template('recommendations.html', movies_urls=zip(movie_names, trailer_urls))
+
+
+@app.route('/logout')
+def logout():
+    flask_login.logout_user()
+    return render_template('about.html')
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return 'Unauthorized access', 401
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5000)

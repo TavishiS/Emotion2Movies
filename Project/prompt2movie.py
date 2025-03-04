@@ -16,13 +16,15 @@ def give3movies(prompt):
     messages=[
       {
         "role": "user",
-        "content": f"prompt:'{prompt}' write only list of 3 movies based on this prompt. output formate should be single line with comma separated movie1, movie2, movie3. dont write anything else."
+        "content": f"prompt:'{prompt}' write only list of 3 movies based on this prompt. output formate should be single line with comma separated movie1, movie2, movie3. please don't write anything else."
       }
     ]
   )
   output = completion.choices[0].message.content
-  print(output)
+  #print(output)
   output=output.split(",")
+  if len(output)>3:
+    output=output[-3:]
   return output
 
 if __name__ == "__main__":
