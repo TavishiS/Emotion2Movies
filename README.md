@@ -9,6 +9,7 @@ We will recommend movie on the basis of your emotions :)
 3. Folder "instance" containing local database (sql-lite)
 4. Folder "learning" containing things that are created just for understanding new tools and technology
 5. Folder "MoM" to store Minutes of the Meetings on a regular basis
+6. Folder "SRS" to store requirements document : https://1drv.ms/w/c/8039175bd1074318/EbC3cY1hmiVAhf5rpwh-T7IBVD-M7zzY2zVgdHsKSOSQVg?e=aoOIDt
 
 # To run app :
 1. clone repository
