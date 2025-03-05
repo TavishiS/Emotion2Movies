@@ -2,41 +2,8 @@
 <html>
 <head>
 	<title>Movie List</title>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-			background-color: #f2f2f2;
-		}
-		.container {
-			width: 800px;
-			margin: 50px auto;
-			padding: 20px;
-			background-color: #fff;
-			border: 1px solid #ddd;
-			border-radius: 10px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		}
-		.header {
-			background-color: #4CAF50;
-			color: #fff;
-			padding: 20px;
-			text-align: center;
-		}
-		.table-container {
-			padding: 20px;
-		}
-		table {
-			border-collapse: collapse;
-			width: 100%;
-		}
-		th, td {
-			border: 1px solid #ddd;
-			padding: 10px;
-		}
-		th {
-			background-color: #f0f0f0;
-		}
-	</style>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+
 </head>
 <body>
 	<div class="container">

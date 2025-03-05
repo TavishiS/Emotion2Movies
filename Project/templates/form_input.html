@@ -4,57 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Recommender</title>
-    <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            text-align: center; 
-            background-color: #f4f4f4; 
-        }
-        .container { 
-            max-width: 800px; 
-            margin: 20px auto; 
-            padding: 20px; 
-            background: white; 
-            border-radius: 10px; 
-        }
-        label, select, input { 
-            margin: 10px; 
-            width: 90%; 
-            padding: 10px; 
-        }
-        button { 
-            padding: 10px 20px; 
-            background-color: #007bff; 
-            color: white; 
-            border: none; 
-            cursor: pointer; 
-            margin: 20px;
-        }
-        button:hover { 
-            background-color: #0056b3; 
-        }
-        #movieList {
-            list-style: none;
-            padding: 0;
-        }
-        #movieList li {
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .movie-info {
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-        .trailer-container {
-            margin-top: 15px;
-        }
-        .error-message {
-            color: red;
-            margin: 10px;
-        }
-    </style>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+
 </head>
 <body>
     <div class="container">
