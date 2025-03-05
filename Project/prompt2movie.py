@@ -1,10 +1,13 @@
 from openai import OpenAI
-myKey="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"
+
+shreeKey="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"
+#used by dhruv for testing
+dhruvKey = "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"
 
 def give5movies(prompt):
   client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=myKey,
+    api_key=shreeKey,
   )
   completion = client.chat.completions.create(
   #   extra_headers={
