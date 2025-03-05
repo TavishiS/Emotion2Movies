@@ -1,62 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Emotion2Movies</title>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-			background-color: #f2f2f2;
-		}
-		.container {
-			width: 800px;
-			margin: 50px auto;
-			padding: 20px;
-			background-color: #fff;
-			border: 1px solid #ddd;
-			border-radius: 10px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		}
-		.header {
-			background-color: #4CAF50;
-			color: #fff;
-			padding: 20px;
-			text-align: center;
-		}
-		.table-container {
-			padding: 20px;
-		}
-		table {
-			border-collapse: collapse;
-			width: 100%;
-		}
-		th, td {
-			border: 1px solid #ddd;
-			padding: 10px;
-		}
-		th {
-			background-color: #f0f0f0;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion2Movies - Movie List</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .header {
+            background-color: rgba(76, 175, 80, 0.8);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .table-container {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background-color: rgba(76, 175, 80, 0.3);
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        a {
+            color: #9fc1ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #45a049;
+            text-decoration: underline;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-		<div class="header">
-			<h1>Movie List</h1>
-		</div>
-		<div class="table-container">
-			<table>
-				<tr>
-					<th>Movie Name</th>
-					<th>YouTube trailer URL</th>
-				</tr>
-				{% for movie, trailer in movies_urls %}
-				<tr>
-					<td>{{ movie }}</td>
-					<td><a href="{{ trailer }}">Search on YouTube</a></td>
-				</tr>
-				{% endfor %}
-			</table>
-		</div>
-	</div>
+    <div class="floating-shapes">
+        <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
+        <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
+        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
+        <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Movie List</h1>
+        </div>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Movie Name</th>
+                    <th>YouTube trailer URL</th>
+                </tr>
+                {% for movie, trailer in movies_urls %}
+                <tr>
+                    <td>{{ movie }}</td>
+                    <td><a href="{{ trailer }}" target="_blank">Search on YouTube</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            shapes.forEach(shape => {
+                const shapeX = parseFloat(shape.style.left) / 100;
+                const shapeY = parseFloat(shape.style.top) / 100;
+                
+                const moveX = (x - 0.5) * 20 * (shapeX - 0.5);
+                const moveY = (y - 0.5) * 20 * (shapeY - 0.5);
+                
+                shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+    </script>
 </body>
 </html>
