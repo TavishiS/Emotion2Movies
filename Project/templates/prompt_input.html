@@ -1,25 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Movie Name Generator</title>
-<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion2Movies - Movie Name Generator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .header {
+            background-color: rgba(76, 175, 80, 0.8);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .form {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: 1.1em;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            height: 40px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1em;
+        }
+
+        .form-group input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-		<div class="header">
-			<h1>Movie Name Generator</h1>
-		</div>
-		<div class="form">
-			<form action="/prompt_generate" method="POST">
-				<div class="form-group">
-					<label for="prompt">Enter a string prompt to generate a movie name:</label>
-					<input type="text" id="prompt" name="prompt" placeholder="e.g. 'space adventure' or 'romantic comedy'" required="required">
-				</div>
-				<button class="button" type="submit">Generate Movies</button>
-			</form>
-		</div>
+    <div class="floating-shapes">
+        <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
+        <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
+        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
+        <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
+    </div>
 
-	</div>
+    <div class="container">
+        <div class="header">
+            <h1>Movie Name Generator</h1>
+        </div>
+        <div class="form">
+            <form action="/prompt_generate" method="POST">
+                <div class="form-group">
+                    <label for="prompt">Enter a string prompt to generate a movie name:</label>
+                    <input type="text" id="prompt" name="prompt" placeholder="e.g. 'space adventure' or 'romantic comedy'" required="required">
+                </div>
+                <button class="button" type="submit">Generate Movies</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            shapes.forEach(shape => {
+                const shapeX = parseFloat(shape.style.left) / 100;
+                const shapeY = parseFloat(shape.style.top) / 100;
+                
+                const moveX = (x - 0.5) * 20 * (shapeX - 0.5);
+                const moveY = (y - 0.5) * 20 * (shapeY - 0.5);
+                
+                shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+    </script>
 </body>
 </html>

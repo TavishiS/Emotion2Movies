@@ -114,7 +114,7 @@ def prompt_input():
 def prompt_generate():
     prompt_in = request.form['prompt']
     print(prompt_in)
-    movie_names = prompt2movie.give3movies(prompt=prompt_in)
+    movie_names = prompt2movie.give5movies(prompt=prompt_in)
     print(movie_names)
     trailer_urls = []
     for movie_name in movie_names:

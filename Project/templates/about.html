@@ -1,145 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Emotion2Movies</title>
-	<style>
-		/* body {
-			font-family: Arial, sans-serif;
-			background-color: #f2f2f2;
-		}
-		.container {
-			width: 800px;
-			margin: 50px auto;
-			padding: 20px;
-			background-color: #fff;
-			border: 1px solid #ddd;
-			border-radius: 10px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		}
-		.header {
-			background-color: #4CAF50;
-			color: #fff;
-			padding: 20px;
-			text-align: center;
-		}
-		.content {
-			padding: 20px;
-		}
-		.buttons {
-			margin-top: 20px;
-			text-align: center;
-		}
-		.button {
-			background-color: #4CAF50;
-			color: #fff;
-			padding: 10px 20px;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-		.button:hover {
-			background-color: #3e8e41;
-		} */
-		 /* General styling */
-		 /* General styling */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #121212;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    color: #e0e0e0;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion2Movies</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-/* Container styling */
-.container {
-    width: 80%;
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 30px;
-    background: #1e1e1e;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.container:hover {
-    transform: scale(1.02);
-}
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
 
-/* Header styling */
-.header {
-    background: linear-gradient(135deg, #2a2a72, #009ffd);
-    color: #e0e0e0;
-    padding: 25px;
-    font-size: 24px;
-    font-weight: bold;
-    border-radius: 10px 10px 0 0;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-}
+        .header {
+            background-color: rgba(76, 175, 80, 0.8);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
 
-/* Content styling */
-.content {
-    padding: 20px;
-    font-size: 18px;
-    color: #e0e0e0;
-    line-height: 1.6;
-}
+        .content {
+            color: #fff;
+            line-height: 1.6;
+            text-align: justify;
+        }
 
-/* Buttons styling */
-.buttons {
-    margin-top: 20px;
-}
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
 
-.button {
-    background: linear-gradient(135deg, #009ffd, #2a2a72);
-    color: #ffffff;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
+        .button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
 
-.button:hover {
-    background: linear-gradient(135deg, #0066cc, #003366);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 153, 255, 0.3);
-}
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-	</style>
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-		<div class="header">
-			<h1>About Our Project</h1>
-		</div>
-		<div class="content" style="text-align: justify; color: #333;">
-			<p>
-				Our movie recommendation web app is designed to provide users with personalized movie suggestions based on their preferences. Users can discover movies by either filling out a form, answering a set of questions, or simply providing a text prompt describing their mood, genre preferences, or specific interests. The app utilizes an intelligent recommendation system that analyzes user input and suggests movies that best match their tastes, ensuring a seamless and engaging experience for cinephiles.
-			</p>
-			<p>
-            	Developed by a team of passionate innovators : Shreekar, Tavishi Srivastava, Dhruv Mishra, Ekta Saini, Ripu Dhaman Singh and Sanyam Kabra. The project aims to enhance movie discovery through an intuitive and user-friendly interface. Whether users seek classic hits, trending blockbusters, or hidden gems, the app curates recommendations tailored to individual preferences, making movie selection effortless and enjoyable.
-			</p>
-			<p>
-				We hope you enjoy using our movie recommendation web app and discover new films :)
-			</p>
+    <div class="floating-shapes">
+        <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
+        <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
+        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
+        <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>About Our Project</h1>
+        </div>
+        <div class="content">
+            <p>
+            Our movie recommendation web app is designed to provide users with personalized movie suggestions based on their preferences. Users can discover movies by either filling out a form, answering a set of questions, or simply providing a text prompt describing their mood, genre preferences, or specific interests. The app utilizes an intelligent recommendation system that analyzes user input and suggests movies that best match their tastes, ensuring a seamless and engaging experience for cinephiles.
+            </p>
+            <p>
+            Developed by a team of passionate innovators : Shreekar, Tavishi Srivastava, Dhruv Mishra, Ekta Saini, Ripu Dhaman Singh and Sanyam Kabra. The project aims to enhance movie discovery through an intuitive and user-friendly interface. Whether users seek classic hits, trending blockbusters, or hidden gems, the app curates recommendations tailored to individual preferences, making movie selection effortless and enjoyable.
+            </p>
+            <p>
+            We hope you enjoy using our movie recommendation web app and discover new films :)
+            </p>
+        </div>
+        <div class="buttons">
+            <button class="button" onclick="window.location.href='sign_in'">Sign In</button>
+            <button class="button" onclick="window.location.href='sign_up'">Sign Up</button>
+            <button class="button" onclick="window.location.href='home_guest'">As Guest</button>
+        </div>
+    </div>
 
-		</div>
-		<div class="buttons">
-			<button class="button" onclick="window.location.href='sign_in'">Sign In</button>
-			<button class="button" onclick="window.location.href='sign_up'">Sign Up</button>
-			<button class="button" onclick="window.location.href='home_guest'">As Guest</button>
-		</div>
-	</div>
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            shapes.forEach(shape => {
+                const shapeX = parseFloat(shape.style.left) / 100;
+                const shapeY = parseFloat(shape.style.top) / 100;
+                
+                const moveX = (x - 0.5) * 20 * (shapeX - 0.5);
+                const moveY = (y - 0.5) * 20 * (shapeY - 0.5);
+                
+                shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+    </script>
 </body>
 </html>
