@@ -5,12 +5,14 @@ import flask_login
 import pymongo
 import prompt2movie, form2movie, userDatabase
 
-app=Flask(__name__)
-CORS(app)
+app=Flask(__name__) #initializing flask app
+
+CORS(app)#enables cross origin resource sharing
 app.secret_key = 'SE_project'  # Change this to your secret key
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
+#user class
 class User(flask_login.UserMixin):
     def __init__(self,username):
         self.id=username
@@ -35,18 +37,22 @@ def request_loader(request):
     user = User(username)
     return user
 
+#first page of app
 @app.route('/')
 def firstPage():
     return render_template('about.html')
 
+#guest page
 @app.route('/home_guest')
 def home():
     return render_template('home_guest.html')
 
+#sign up page
 @app.route('/sign_up')
 def sign_up():
     return render_template('sign_up.html')
 
+#triggered on clicking signup button , allowed methods are only get and post
 @app.route('/signup', methods=['GET','POST'])
 def call_signup():
     return_mess=sign_up_in.signup()
@@ -59,10 +65,12 @@ def call_signup():
         flash(message, 'error')
         return redirect(url_for('sign_up'))
 
+#sign in page
 @app.route('/sign_in')
 def sign_in():
     return render_template('sign_in.html')
 
+#triggered when clicked sign in button , allowed methods are only get and post
 @app.route('/signin', methods=['GET', 'POST'])
 def login():
     signin_message = sign_up_in.signin()
@@ -78,16 +86,19 @@ def login():
         flash(signin_message_data.get('message'), 'error')
         return redirect(url_for('sign_in'))
     
+#home of user which is logged in
 @app.route('/home_user')
 @flask_login.login_required
 def protected():
+    #renders webpage with current user data
     return render_template('home_user.html', user=flask_login.current_user)
-
+#form input of user
 @app.route('/form_input')
 @flask_login.login_required
 def form_input():
     return render_template('form_input.html')
 
+#triggers on submitting the form
 @app.route('/recommend_form', methods=['GET'])
 @flask_login.login_required
 def recommend_movies():
@@ -122,7 +133,7 @@ def prompt_generate():
         trailer_urls.append(trailer_url)
     return render_template('recommendations.html', movies_urls=zip(movie_names, trailer_urls))
 
-
+#logout action after clicking logout button , renders about.html page and logs user out
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
