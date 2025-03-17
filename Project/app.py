@@ -2,8 +2,10 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, f
 from flask_cors import CORS
 import sign_up_in
 import flask_login
-import pymongo
 import prompt2movie, form2movie, userDatabase
+from pydub import AudioSegment
+import process_audio
+import io
 
 app=Flask(__name__) #initializing flask app
 
@@ -132,6 +134,42 @@ def prompt_generate():
         trailer_url = f"https://www.youtube.com/results?search_query=trailer+%3A+{movie_name}"
         trailer_urls.append(trailer_url)
     return render_template('recommendations.html', movies_urls=zip(movie_names, trailer_urls))
+
+@app.route('/prompt_input_speech')
+@flask_login.login_required
+def prompt_input_speech():
+    return render_template('prompt_input_speech.html',user=flask_login.current_user)
+
+@app.route('/process_audio_input', methods=['POST'])
+@flask_login.login_required
+def upload():
+    """Handles audio file uploads without saving."""
+    audio_file = request.files['audio']
+    
+    if not audio_file:
+        return jsonify({"error": "No audio file provided"}), 400
+
+    try:
+        # Convert from webm to wav in memory
+        audio = AudioSegment.from_file(audio_file.stream, format="webm")
+        audio = audio.set_channels(1).set_frame_rate(16000)
+
+        # Save to in-memory bytes buffer
+        wav_io = io.BytesIO()
+        audio.export(wav_io, format="wav")
+        wav_io.seek(0)
+
+        # Transcribe the audio
+        text = process_audio.transcribe_audio(wav_io)
+
+        # Reset buffer for emotion prediction
+        wav_io.seek(0)
+        pred_emo = process_audio.predict_emo(wav_io)
+        print(f"Predicted Emotion: {pred_emo}")
+        return jsonify({"message": "Processing complete", "transcription": text, "emotion": pred_emo})
+    
+    except Exception as e:
+        return jsonify({"error": f"Processing failed: {e}"}), 500
 
 #logout action after clicking logout button , renders about.html page and logs user out
 @app.route('/logout')

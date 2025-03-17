@@ -24,9 +24,10 @@
         <div class="header">
             <h1>Recommend Movies</h1>
         </div>
-        <input type="text" class="input-box search-bar" placeholder="Search for movies...">
+        <!-- <input type="text" class="input-box search-bar" placeholder="Search for movies..."> -->
         <div class="button-container" style="text-align: center;">
             <button class="button" onclick="window.location.href='prompt_input'">Write Your Thoughts</button>
+            <button class="button" onclick="window.location.href='prompt_input_speech'">Speak Out Your Thoughts</button>
             <button class="button" onclick="window.location.href='form_input'">No Ideas, Need Some Questions</button>
         </div>
         <div class="table-container">
@@ -45,8 +46,6 @@
     </div>
 
     <script>
-        window.alert("Welcome to Emotion2Movies! You are logged in as {{user.id}}.");
-
         document.addEventListener('mousemove', (e) => {
             const shapes = document.querySelectorAll('.shape');
             const x = e.clientX / window.innerWidth;

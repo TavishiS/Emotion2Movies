@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record and Transcribe Audio</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
+        <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
+        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
+        <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
+    </div>
+    
+    <div class="container">
+        <div class="user-info" style="text-align: center;">
+            <p>Username: <span id="username">{{user.id}}</span></p>
+            <p>Email: <span id="email">{{user.email}}</span></p>
+            <button class="button logout-btn" onclick="window.location.href='logout'">Logout</button>
+        </div>
+        
+        <div class="header">
+            <h1>Record and Transcribe Audio</h1>
+        </div>
+        
+        <button class="button" onclick="startRecording()">Start Recording</button>
+        <button class="button" onclick="stopRecording()">Stop Recording</button>
+        
+        <p><strong>Status:</strong> <span id="status"></span></p>
+        <p><strong>Transcription:</strong> <span id="transcription"></span></p>
+        <p><strong>Emotion:</strong> <span id="emotion"></span></p>
+    </div>
+    
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            shapes.forEach(shape => {
+                const shapeX = parseFloat(shape.style.left) / 100;
+                const shapeY = parseFloat(shape.style.top) / 100;
+                
+                const moveX = (x - 0.5) * 20 * (shapeX - 0.5);
+                const moveY = (y - 0.5) * 20 * (shapeY - 0.5);
+                
+                shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+    </script>
+    
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+    
+        async function startRecording() {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+    
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+    
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+                sendAudio(audioBlob);
+            };
+    
+            mediaRecorder.start();
+            document.getElementById("status").innerText = "Recording...";
+        }
+    
+        function stopRecording() {
+            if (mediaRecorder) {
+                mediaRecorder.stop();
+                document.getElementById("status").innerText = "Recording stopped. Uploading...";
+            }
+        }
+        
+        function sendAudio(audioBlob) {
+            let formData = new FormData();
+            formData.append("audio", audioBlob, "recorded_audio.webm");
+        
+            fetch("/process_audio_input", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("status").innerText = "Recording saved!";
+                document.getElementById("transcription").innerText = data.transcription;
+                document.getElementById("emotion").innerText = data.emotion;
+                audioChunks = [];  // Reset audioChunks to avoid appending old data
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>

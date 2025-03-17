@@ -32,12 +32,13 @@ body {
 .header {
     background-color: rgba(229, 9, 20, 0.2); /* Transparent Netflix red */
     color: #fff;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 90px;
     font-weight: 600;
     backdrop-filter: blur(5px); /* Optional: Adds a glass effect */
+    
 }
 
 /* Button styling */
@@ -53,7 +54,8 @@ body {
     text-align: center;
     text-decoration: none;
     font-weight: 600;
-    line-height: 1; /* Ensures no extra spacing */
+    line-height: 2; /* Ensures no extra spacing */
+    margin: 5px;
 }
 
 .button:hover {
@@ -152,11 +154,11 @@ a:hover {
 .shape {
     position: absolute;
     border-radius: 50%;
-    background: rgba(229, 9, 20, 0.1);
+    background: rgba(229, 9, 20, 0.6);
     animation: float 15s infinite;
 }
 
 @keyframes float {
     0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(180deg); }
+    50% { transform: translateY(-70px) rotate(180deg); }
 }
