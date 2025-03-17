@@ -4,125 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emotion2Movies - Recommender</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 800px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        h2, h3 {
-            color: #fff;
-            text-align: center;
-        }
-
-        label, select, input {
-            display: block;
-            margin: 10px auto;
-            width: 90%;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-        }
-
-        select, input {
-            font-size: 16px;
-        }
-
-        select option {
-            background: #764ba2;
-        }
-
-        button {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: #fff;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 20px auto;
-            display: block;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        #movieList {
-            list-style: none;
-            padding: 0;
-        }
-
-        #movieList li {
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: #fff;
-        }
-
-        .movie-info {
-            margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-
-        .trailer-container {
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .error-message {
-            color: #ff6b6b;
-            text-align: center;
-            margin: 10px;
-        }
-
-        .floating-shapes {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 15s infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
 </head>
 <body>
     <div class="floating-shapes">
@@ -135,7 +17,7 @@
         <h2>🎬 Movie Recommender</h2>
 
         <label for="genre">Genre:</label>
-        <select id="genre">
+        <select id="genre" class="input-box">
             <option value="">Any</option>
             <option value="28">Action</option>
             <option value="12">Adventure</option>
@@ -158,7 +40,7 @@
         </select>
 
         <label for="language">Language:</label>
-        <select id="language">
+        <select id="language" class="input-box">
             <option value="">Any</option>
             <option value="en">English</option>
             <option value="hi">Hindi</option>
@@ -175,21 +57,21 @@
         </select>
 
         <label for="minRating">Rating Range (1-10):</label>
-        <input type="number" id="minRating" min="1" max="10" value="5">
-        <input type="number" id="maxRating" min="1" max="10" value="10">
+        <input type="number" id="minRating" min="1" max="10" value="5" class="input-box">
+        <input type="number" id="maxRating" min="1" max="10" value="10" class="input-box">
 
         <label for="startYear">Year Range:</label>
-        <input type="number" id="startYear" min="1900" max="2024" value="2000">
-        <input type="number" id="endYear" min="1900" max="2024" value="2024">
+        <input type="number" id="startYear" min="1900" max="2024" value="2000" class="input-box">
+        <input type="number" id="endYear" min="1900" max="2024" value="2024" class="input-box">
 
         <label for="minDuration">Duration Range (mins):</label>
-        <input type="number" id="minDuration" min="30" max="300" value="60">
-        <input type="number" id="maxDuration" min="30" max="300" value="180">
+        <input type="number" id="minDuration" min="30" max="300" value="60" class="input-box">
+        <input type="number" id="maxDuration" min="30" max="300" value="180" class="input-box">
 
-        <button onclick="fetchMovies()">Find Movies</button>
+        <button class="button" onclick="fetchMovies()">Find Movies</button>
 
         <h3>Recommended Movies:</h3>
-        <ul id="movieList"></ul>
+        <div id="movieContainer" class="movie-container"></div>
     </div>
 
     <script>
@@ -211,62 +93,37 @@
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                const movieList = document.getElementById("movieList");
-                movieList.innerHTML = "";
+                const movieContainer = document.getElementById("movieContainer");
+                movieContainer.innerHTML = "";
 
                 if (!data.movies || data.movies.length === 0) {
-                    movieList.innerHTML = "<li>No matching movies found.</li>";
+                    movieContainer.innerHTML = "<p>No matching movies found.</p>";
                     return;
                 }
 
                 data.movies.forEach(movie => {
-                    const li = document.createElement("li");
+                    const movieDiv = document.createElement("div");
+                    movieDiv.classList.add("movie-item");
+                    movieDiv.innerHTML = `<p>${movie.title} (${movie.year}) - ⭐ ${movie.rating}</p>`;
                     
-                    const movieInfo = document.createElement("div");
-                    movieInfo.className = "movie-info";
-                    movieInfo.innerHTML = `${movie.title} (${movie.year}) - ⭐ ${movie.rating}`;
-                    li.appendChild(movieInfo);
-
                     if (movie.trailer) {
-                        const trailerContainer = document.createElement("div");
-                        trailerContainer.className = "trailer-container";
-                        trailerContainer.innerHTML = `
-                            <iframe 
-                                width="560" 
-                                height="315" 
-                                src="https://www.youtube.com/embed/${movie.trailer}"
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen>
-                            </iframe>
-                        `;
-                        li.appendChild(trailerContainer);
+                        const trailerIframe = document.createElement("iframe");
+                        trailerIframe.width = "560";
+                        trailerIframe.height = "315";
+                        trailerIframe.src = `https://www.youtube.com/embed/${movie.trailer}`;
+                        trailerIframe.frameBorder = "0";
+                        trailerIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                        trailerIframe.allowFullscreen = true;
+                        movieDiv.appendChild(trailerIframe);
                     }
-
-                    movieList.appendChild(li);
+                    
+                    movieContainer.appendChild(movieDiv);
                 });
             } catch (error) {
                 console.error("Error fetching movies:", error);
-                const movieList = document.getElementById("movieList");
-                movieList.innerHTML = `<li class="error-message">Error fetching movies. Please try again later.</li>`;
+                document.getElementById("movieContainer").innerHTML = `<p class="error-message">Error fetching movies. Please try again later.</p>`;
             }
         }
-
-        document.addEventListener('mousemove', (e) => {
-            const shapes = document.querySelectorAll('.shape');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            shapes.forEach(shape => {
-                const shapeX = parseFloat(shape.style.left) / 100;
-                const shapeY = parseFloat(shape.style.top) / 100;
-                
-                const moveX = (x - 0.5) * 20 * (shapeX - 0.5);
-                const moveY = (y - 0.5) * 20 * (shapeY - 0.5);
-                
-                shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-        });
     </script>
 </body>
 </html>

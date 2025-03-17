@@ -4,127 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emotion2Movies - Sign In</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        h2 {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .form-group input[type="text"], .form-group input[type="password"] {
+        .input-box {
             width: 100%;
-            height: 40px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-        }
-
-        .form-group input[type="submit"] {
-            width: 100%;
-            height: 40px;
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
+            color: white;
             font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input[type="submit"]:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .signup-link {
-            margin-top: 20px;
             text-align: center;
-            color: #fff;
+            outline: none;
+            transition: 0.3s;
         }
 
-        .signup-link a {
-            color: #4CAF50;
-            text-decoration: none;
-            font-weight: bold;
+        .input-box::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
 
-        .signup-link a:hover {
-            text-decoration: underline;
-        }
-
-        .flash-message {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            text-align: center;
-            color: #fff;
-        }
-
-        .flash-message.error {
-            background-color: rgba(255, 0, 0, 0.3);
-        }
-
-        .flash-message.success {
-            background-color: rgba(0, 255, 0, 0.3);
-        }
-
-        .floating-shapes {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 15s infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
+        .input-box:focus {
+            border-color: #4CAF50;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
@@ -150,14 +53,14 @@
         <form action="/signin" method="post">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" required class="input-box" placeholder="Enter your username">
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" required class="input-box" placeholder="Enter your password">
             </div>
-            <div class="form-group">
-                <input type="submit" value="Sign In">
+            <div class="form-group" style="text-align: center;">
+                <input type="submit" value="Sign In" class="button">
             </div>
         </form>
         <p class="signup-link">Not a member? <a href="/sign_up">Sign up here</a></p>
