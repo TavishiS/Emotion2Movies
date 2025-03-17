@@ -125,7 +125,10 @@ def prompt_input():
 @app.route('/prompt_generate', methods=['GET','POST'])
 @flask_login.login_required
 def prompt_generate():
-    prompt_in = request.form['prompt']
+    try :
+        prompt_in = request.form['prompt']
+    except:
+        prompt_in = request.args.get('prompt', '')
     print(prompt_in)
     movie_names = prompt2movie.give5movies(prompt=prompt_in)
     print(movie_names)

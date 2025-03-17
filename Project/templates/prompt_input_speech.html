@@ -93,6 +93,8 @@
                 document.getElementById("transcription").innerText = data.transcription;
                 document.getElementById("emotion").innerText = data.emotion;
                 audioChunks = [];  // Reset audioChunks to avoid appending old data
+                const message = `${data.transcription} and my emotion is ${data.emotion}`;
+                window.location.href = `/prompt_generate?prompt=${encodeURIComponent(message)}`;
             })
             .catch(error => console.error("Error:", error));
         }

@@ -1,8 +1,6 @@
 import torch
 import librosa
-#import torchaudio
 from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2ForSequenceClassification, Trainer, TrainingArguments
-#import numpy as np
 
 # Load the pretrained model and feature extractor
 MODEL_PATH = "superb/wav2vec2-base-superb-er"  # Using the specified model
@@ -34,28 +32,8 @@ def predict_emotion(audio_file):
 
     return emotion
 
-def fine_tune_model(train_dataset, eval_dataset):
-    """Fine-tune the model on your dataset."""
-    training_args = TrainingArguments(
-        output_dir="./models/fine_tuned",
-        per_device_train_batch_size=8,
-        evaluation_strategy="epoch",
-        save_strategy="epoch",
-        learning_rate=1e-5,
-        num_train_epochs=3,
-    )
-
-    trainer = Trainer(
-        model=model,
-        args=training_args,
-        train_dataset=train_dataset,
-        eval_dataset=eval_dataset,
-    )
-
-    trainer.train()
-
 if __name__ == "__main__":
     # Example usage
-    audio_path = "recorded_audio_20250316_144205.wav"  # Change this to your input file
+    audio_path = "fear.wav"  # Change this to your input file
     predicted_emotion = predict_emotion(audio_path)
     print(f"Predicted Emotion: {predicted_emotion}")
