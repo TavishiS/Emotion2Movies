@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion2Movies - Movie Recommendation</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
+        <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
+        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
+        <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>AI Movie Recommendation</h1>
+        </div>
+        <div class="form">
+            <form action="/model_reccomend" method="POST">
+                <div class="form-group">
+                    <label for="user_input">Enter prompt:</label>
+                    <input type="text" id="user_input" name="user_input" class="input-box" placeholder="e.g. 'happy', 'sci-fi', 'thrilling adventure'" required>
+                </div>
+                <div class="button-container">
+                    <button class="button" type="submit">Get Recommendations</button>
+                </div>
+            </form>
+        </div>
+
+        <h3>Recommended Movies:</h3>
+        <div id="movieContainer" class="movie-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            shapes.forEach(shape => {
+                const shapeX = parseFloat(shape.style.left) / 100 || 0.5;
+                const shapeY = parseFloat(shape.style.top) / 100 || 0.5;
+                
+                const moveX = (x - 0.5) * 20 * (shapeX - 0.5);
+                const moveY = (y - 0.5) * 20 * (shapeY - 0.5);
+                
+                shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+        const url = `/goto_model_input`
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                const movieContainer = document.getElementById("movieContainer");
+                movieContainer.innerHTML = "";
+
+                if (!data.movies || data.movies.length === 0) {
+                    movieContainer.innerHTML = "<p>No matching movies found.</p>";
+                    return;
+                }
+
+                data.movies.forEach(movie => {
+                    const movieDiv = document.createElement("div");
+                    movieDiv.classList.add("movie-item");
+                    movieDiv.innerHTML = `<p>${movie.title} (${movie.year}) - ⭐ ${movie.rating}</p>`;
+                    
+                    if (movie.trailer) {
+                        const trailerIframe = document.createElement("iframe");
+                        trailerIframe.width = "560";
+                        trailerIframe.height = "315";
+                        trailerIframe.src = `https://www.youtube.com/embed/${movie.trailer}`;
+                        trailerIframe.frameBorder = "0";
+                        trailerIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                        trailerIframe.allowFullscreen = true;
+                        movieDiv.appendChild(trailerIframe);
+                    }
+                    
+                    movieContainer.appendChild(movieDiv);
+                });
+            } catch (error) {
+                console.error("Error fetching movies:", error);
+                document.getElementById("movieContainer").innerHTML = `<p class="error-message">Error fetching movies. Please try again later.</p>`;
+            }
+ 
+    </script>
+</body>
+</html>

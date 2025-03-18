@@ -130,10 +130,15 @@ def search_movies(query, top_k=10):
     
     # Sort by final score (ascending, lower is better)
     sorted_results = sorted(unique_movies.values(), key=lambda x: x[0])
+    
 
     # Get top 5 movies
     filtered_movies = [movie for _, movie in sorted_results[:5]]
-    return filtered_movies
+    movie_ids_result = []
+    for movie in filtered_movies:
+        movie_ids_result.append(movie['id'])
+    print(movie_ids_result)
+    return filtered_movies,movie_ids_result
 
 if __name__ == "__main__":
     while True:
@@ -141,11 +146,12 @@ if __name__ == "__main__":
         if user_input.lower() == "exit":
             break
 
-        results = search_movies(user_input)
+        results,_= search_movies(user_input)
         if results:
             print("\nTop Matching Movies:")
-            for i, movie in enumerate(results, start=1):
+            for i, movie, in enumerate(results, start=1):
                 print(f"{i}. {movie['title']} ({movie.get('release_date', 'N/A')})")
                 print(f"   Overview: {movie.get('description', 'No description available.')}\n")
+
         else:
             print("No matching movies found. Try a different query.")

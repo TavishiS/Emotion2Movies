@@ -6,6 +6,12 @@ import prompt2movie, form2movie, userDatabase
 from pydub import AudioSegment
 import process_audio
 import io
+import sys
+import os
+ai_path = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","learning","ai_model"))
+sys.path.append(ai_path)
+import search_movies_try
+import data
 
 app=Flask(__name__) #initializing flask app
 
@@ -174,6 +180,24 @@ def upload():
     except Exception as e:
         return jsonify({"error": f"Processing failed: {e}"}), 500
 
+@app.route('/goto_model_input',methods = ['POST','GET'])
+def model_inp():
+    return render_template("model_prompt.html", user= flask_login.current_user)
+
+@app.route('/model_reccomend', methods=['GET', 'POST'])
+def model_recco():
+    try:
+        prompt_in = request.form.get('user_input', '') or request.args.get('user_input', '')
+        movie_data, movie_ids = search_movies_try.search_movies(prompt_in)
+        trailer_keys = form2movie.promptID_to_movie(movie_ids)  # Get trailer keys as a list
+    except Exception as e:
+        print(f"Error: {e}")
+        trailer_keys = []
+        movie_data = []
+    print("hi")
+    print(trailer_keys)
+    return render_template('model_reccomendation.html', movie_data=movie_data, trailer_keys=trailer_keys)
+  
 #logout action after clicking logout button , renders about.html page and logs user out
 @app.route('/logout')
 def logout():

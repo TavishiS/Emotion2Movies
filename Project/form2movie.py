@@ -50,6 +50,16 @@ def recommand_movies(genre, language, rating_min, rating_max, year_min, year_max
     except Exception as e:
         print(f"Error in recommend_movies: {e}")
         return jsonify({"error": "Failed to fetch movies"}), 500
+
+
+def promptID_to_movie(movie_ids):
+    trailer_keys = []
+    for movie in movie_ids:
+        trailer_key = get_movie_trailer(movie)
+        if trailer_key:  # Ensure we don’t add empty values
+            trailer_keys.append(trailer_key)
     
+    return trailer_keys
+
 if __name__ == "__main__":
     recommand_movies(genre=35, language="en", rating_min=5, rating_max=10, year_min=2000, year_max=2022, duration_min=60, duration_max=180)
