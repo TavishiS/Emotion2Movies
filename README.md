@@ -13,10 +13,10 @@ We will recommend movie on the basis of your emotions :)
 
 # To run app :
 1. clone repository
-2. Install requirements.txt
-3. open repository directory 
-4. run 'app.py' (relative path to nevigate : "\Project\app.py")
-5. check your api key for using "recommandation using prompt" on https://openrouter.ai/settings/keys
+3. Install requirements.txt
+4. open repository directory
+5. open "Project" directory (important!)
+6. run 'app.py'
 
 
 # How we run this : 
