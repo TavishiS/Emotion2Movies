@@ -2,16 +2,12 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, f
 from flask_cors import CORS
 import sign_up_in
 import flask_login
-import prompt2movie, form2movie, userDatabase
+import form2movie, userDatabase
+# import prompt2movie
 from pydub import AudioSegment
 import process_audio
 import io
-import sys
-import os
-ai_path = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","learning","ai_model"))
-sys.path.append(ai_path)
-import search_movies_try
-import data
+from ai_model import search_movies_try
 
 app=Flask(__name__) #initializing flask app
 
@@ -132,17 +128,19 @@ def prompt_input():
 @flask_login.login_required
 def prompt_generate():
     try :
-        prompt_in = request.form['prompt']
-    except:
-        prompt_in = request.args.get('prompt', '')
-    print(prompt_in)
-    movie_names = prompt2movie.give5movies(prompt=prompt_in)
-    print(movie_names)
-    trailer_urls = []
-    for movie_name in movie_names:
-        trailer_url = f"https://www.youtube.com/results?search_query=trailer+%3A+{movie_name}"
-        trailer_urls.append(trailer_url)
-    return render_template('recommendations.html', movies_urls=zip(movie_names, trailer_urls))
+        prompt_in = request.form.get('prompt', '')
+        
+        return redirect(url_for('model_recco', prompt=prompt_in))
+        # movie_names = prompt2movie.give5movies(prompt=prompt_in)
+        # print(movie_names)
+        # trailer_urls = []
+        # for movie_name in movie_names:
+        #     trailer_url = f"https://www.youtube.com/results?search_query=trailer+%3A+{movie_name}"
+        #     trailer_urls.append(trailer_url)
+        # return render_template('recommendations.html', movies_urls=zip(movie_names, trailer_urls))
+    except Exception as e:
+        print(f"Error: {e}")
+        return redirect(url_for('prompt_input'))
 
 @app.route('/prompt_input_speech')
 @flask_login.login_required
@@ -180,26 +178,23 @@ def upload():
     except Exception as e:
         return jsonify({"error": f"Processing failed: {e}"}), 500
 
-@app.route('/goto_model_input',methods = ['POST','GET'])
-def model_inp():
-    return render_template("model_prompt.html", user= flask_login.current_user)
-
-@app.route('/model_reccomend', methods=['GET', 'POST'])
+@app.route('/model_recommend', methods=['GET', 'POST'])
+@flask_login.login_required
 def model_recco():
     try:
-        prompt_in = request.form.get('user_input', '') or request.args.get('user_input', '')
+        prompt_in = request.args.get('prompt', '')
+        print(prompt_in)
         movie_data, movie_ids = search_movies_try.search_movies(prompt_in)
         trailer_keys = form2movie.promptID_to_movie(movie_ids)  # Get trailer keys as a list
     except Exception as e:
         print(f"Error: {e}")
         trailer_keys = []
         movie_data = []
-    print("hi")
-    print(trailer_keys)
-    return render_template('model_reccomendation.html', movie_data=movie_data, trailer_keys=trailer_keys)
+    return render_template('model_recommendation.html', movie_data=movie_data, trailer_keys=trailer_keys)
   
 #logout action after clicking logout button , renders about.html page and logs user out
 @app.route('/logout')
+@flask_login.login_required
 def logout():
     flask_login.logout_user()
     return render_template('about.html')
@@ -209,4 +204,6 @@ def unauthorized_handler():
     return 'Unauthorized access', 401
 
 if __name__ == '__main__':
+    # from waitress import serve
+    # serve(app, host='0.0.0.0', port=5000, threads=8)
     app.run(debug=True,host='0.0.0.0',port=5000)
