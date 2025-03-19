@@ -93,8 +93,18 @@
                 document.getElementById("transcription").innerText = data.transcription;
                 document.getElementById("emotion").innerText = data.emotion;
                 audioChunks = [];  // Reset audioChunks to avoid appending old data
-                const message = `${data.transcription} and my emotion is ${data.emotion}`;
-                window.location.href = `/model_recommend?prompt=${encodeURIComponent(message)}`;
+
+                //sending in form of form element
+                const messageInput = document.createElement("input");
+                messageInput.type = "hidden";
+                messageInput.name = "prompt";
+                messageInput.value = `${data.transcription} and my emotion is ${data.emotion}`;
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "/prompt_send_to_model";
+                form.appendChild(messageInput);
+                document.body.appendChild(form);
+                form.submit();
             })
             .catch(error => console.error("Error:", error));
         }

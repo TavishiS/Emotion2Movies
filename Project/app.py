@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, f
 from flask_cors import CORS
 import sign_up_in
 import flask_login
-import form2movie, userDatabase
-# import prompt2movie
+import prompt2movie, form2movie, userDatabase #importing .py files (modules)
 from pydub import AudioSegment
 import process_audio
 import io
 from ai_model import search_movies_try
+
+########################################################################################################
 
 app=Flask(__name__) #initializing flask app
 
@@ -41,6 +42,8 @@ def request_loader(request):
     user = User(username)
     return user
 
+########################################################################################################
+
 #first page of app
 @app.route('/')
 def firstPage():
@@ -50,6 +53,8 @@ def firstPage():
 @app.route('/home_guest')
 def home():
     return render_template('home_guest.html')
+
+########################################################################################################
 
 #sign up page
 @app.route('/sign_up')
@@ -89,13 +94,18 @@ def login():
     else:
         flash(signin_message_data.get('message'), 'error')
         return redirect(url_for('sign_in'))
-    
+
+########################################################################################################
+
 #home of user which is logged in
 @app.route('/home_user')
 @flask_login.login_required
 def protected():
     #renders webpage with current user data
     return render_template('home_user.html', user=flask_login.current_user)
+
+##########################################################################################################
+
 #form input of user
 @app.route('/form_input')
 @flask_login.login_required
@@ -117,30 +127,14 @@ def recommend_movies():
     duration_max = request.args.get("maxDuration", 300)
 
     return form2movie.recommand_movies(genre, language, rating_min, rating_max, year_min, year_max, duration_min, duration_max)
-    
 
+##########################################################################################################    
 @app.route('/prompt_input')
 @flask_login.login_required
 def prompt_input():
     return render_template('prompt_input.html',user=flask_login.current_user)
 
-@app.route('/prompt_generate', methods=['GET','POST'])
-@flask_login.login_required
-def prompt_generate():
-    try :
-        prompt_in = request.form.get('prompt', '')
-        
-        return redirect(url_for('model_recco', prompt=prompt_in))
-        # movie_names = prompt2movie.give5movies(prompt=prompt_in)
-        # print(movie_names)
-        # trailer_urls = []
-        # for movie_name in movie_names:
-        #     trailer_url = f"https://www.youtube.com/results?search_query=trailer+%3A+{movie_name}"
-        #     trailer_urls.append(trailer_url)
-        # return render_template('recommendations.html', movies_urls=zip(movie_names, trailer_urls))
-    except Exception as e:
-        print(f"Error: {e}")
-        return redirect(url_for('prompt_input'))
+##########################################################################################################
 
 @app.route('/prompt_input_speech')
 @flask_login.login_required
@@ -178,11 +172,44 @@ def upload():
     except Exception as e:
         return jsonify({"error": f"Processing failed: {e}"}), 500
 
-@app.route('/model_recommend', methods=['GET', 'POST'])
+##########################################################################################################  
+  
+@app.route('/prompt_send_to_model', methods=['GET','POST'])
 @flask_login.login_required
-def model_recco():
+def prompt_send_to_model():
+    try :
+        prompt_in = request.form.get('prompt', '')
+        return redirect(url_for('model_run', prompt=prompt_in))
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return redirect(url_for('prompt_input'))
+    
+@app.route('/prompt_process_with_API_and_send_to_model', methods=['GET','POST'])
+@flask_login.login_required
+def prompt_process_with_API_and_send_to_model():
+    try :
+        prompt_in = request.form.get('prompt', '')
+        prompt_in += " related movies, not exactly same"
+        print(prompt_in)
+
+        movie_names = prompt2movie.give5movies(prompt=prompt_in)
+        prompt_processed = ""
+        for movie_name in movie_names:
+            prompt_processed += movie_name + ", "
+        return redirect(url_for('model_run', prompt=prompt_processed))
+    except Exception as e:
+        print(f"Error: {e}")
+        return redirect(url_for('prompt_input'))
+
+##########################################################################################################
+
+@app.route('/model_run', methods=['GET', 'POST'])
+@flask_login.login_required
+def model_run():
     try:
-        prompt_in = request.args.get('prompt', '')
+        prompt_in = request.args.get('prompt', '')  
+        #taking input from /prompt_send_to_model or from /prompt_process_with_API_and_send_to_model
         print(prompt_in)
         movie_data, movie_ids = search_movies_try.search_movies(prompt_in)
         trailer_keys = form2movie.promptID_to_movie(movie_ids)  # Get trailer keys as a list
@@ -190,8 +217,10 @@ def model_recco():
         print(f"Error: {e}")
         trailer_keys = []
         movie_data = []
-    return render_template('model_recommendation.html', movie_data=movie_data, trailer_keys=trailer_keys)
-  
+    return render_template('recommendations.html', movie_data=movie_data, trailer_keys=trailer_keys, given_prompt=prompt_in)
+
+##########################################################################################################
+
 #logout action after clicking logout button , renders about.html page and logs user out
 @app.route('/logout')
 @flask_login.login_required
@@ -204,6 +233,4 @@ def unauthorized_handler():
     return 'Unauthorized access', 401
 
 if __name__ == '__main__':
-    # from waitress import serve
-    # serve(app, host='0.0.0.0', port=5000, threads=8)
     app.run(debug=True,host='0.0.0.0',port=5000)

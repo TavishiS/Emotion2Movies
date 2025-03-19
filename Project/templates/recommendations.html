@@ -3,59 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emotion2Movies - Movie List</title>
-    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <title>Movie Recommendations</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="floating-shapes">
-        <div class="shape" style="width: 80px; height: 80px; top: 10%; left: 15%;"></div>
-        <div class="shape" style="width: 100px; height: 100px; top: 40%; left: 70%;"></div>
-        <div class="shape" style="width: 60px; height: 60px; bottom: 20%; right: 10%;"></div>
-        <div class="shape" style="width: 90px; height: 90px; bottom: 50%; left: 40%;"></div>
-    </div>
-
     <div class="container">
-        <div class="header">
-            <h1>Movie List</h1>
+        <h1>Recommended Movies</h1>
+        <div id="movieContainer">
+            <p>Loading movies...</p>
         </div>
-        
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Movie Name</th>
-                        <th>YouTube Trailer</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for movie, trailer in movies_urls %}
-                    <tr>
-                        <td>{{ movie }}</td>
-                        <td><a href="{{ trailer }}" target="_blank">Watch Trailer</a></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="button-container">
-            <a href="/home_user" class="button">Back to Home</a>
-        </div>
+        <br><br>
+        <form action="/prompt_process_with_API_and_send_to_model" method="post">
+            <input type="hidden" name="prompt" value="{{ given_prompt }}">
+            <div class="button-container" style="text-align: center;">
+                <button class="button" type="submit">Get better results !!</button>
+            </div>
+        </form>
     </div>
-
     <script>
-        document.addEventListener('mousemove', (e) => {
-            const shapes = document.querySelectorAll('.shape');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            shapes.forEach(shape => {
-                const moveX = (x - 0.5) * 40;
-                const moveY = (y - 0.5) * 40;
-                
-                shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
+        document.addEventListener("DOMContentLoaded", async function () {
+            try {
+                const movies = {{ movie_data | tojson }};
+                const trailerkeys = {{trailer_keys|tojson}} ;
+                const movieContainer = document.getElementById("movieContainer");
+                movieContainer.innerHTML = "";
+
+                if (!movies || movies.length === 0) {
+                    movieContainer.innerHTML = "<p>No matching movies found.</p>";
+                    return;
+                }
+                let ct = 0;
+                movies.forEach(movie => {
+                    const movieDiv = document.createElement("div");
+                    movieDiv.classList.add("movie-item");
+                    movieDiv.innerHTML = `<p><strong>${movie.title}</strong> (${movie.release_date || 'N/A'}) - ⭐ ${movie.popularity || 'N/A'}</p>`;
+                    
+                    // Display trailer if available
+                    if (trailerkeys[ct]) {
+                        const trailerIframe = document.createElement("iframe");
+                        trailerIframe.width = "560";
+                        trailerIframe.height = "315";
+                        trailerIframe.src = `https://www.youtube.com/embed/${trailerkeys[ct]}`;
+                        trailerIframe.frameBorder = "0";
+                        trailerIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                        trailerIframe.allowFullscreen = true;
+                        movieDiv.appendChild(trailerIframe);
+                    }
+
+                    movieContainer.appendChild(movieDiv);
+                    ct++;
+                });
+
+            } catch (error) {
+                console.error("Error fetching movies:", error);
+                document.getElementById("movieContainer").innerHTML = `<p class="error-message">Error fetching movies. Please try again later.</p>`;
+            }
         });
     </script>
+
+    
 </body>
 </html>
