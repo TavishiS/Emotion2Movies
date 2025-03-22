@@ -11,7 +11,7 @@
     <header class="navbar">
         <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;">
         <nav class="nav-menu">
-            <a href="/">About</a>
+            <a href="/about4user">About MoodFlix</a>
             <a href="/home_user">Home</a>
             <a href="/prompt_input">Prompt to search</a>
             <a href="/prompt_input_speech">Speak to search</a>
@@ -23,7 +23,7 @@
     </header>
 
     <div class="container">
-        <h2>🎬 Movie Recommender</h2>
+        <h2>Fill the form and submit !!</h2>
 
         <form id="movieForm" action="/recommend_form" method="POST">
             <label for="genre">Genre:</label>
@@ -80,8 +80,6 @@
 
             <button type="submit" class="button">Find Movies</button>
         </form>
-
-        <h3>Recommended Movies:</h3>
         <div id="movieContainer" class="movie-container"></div>
     </div>
 </body>

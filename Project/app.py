@@ -47,7 +47,7 @@ def request_loader(request):
 #first page of app
 @app.route('/')
 def firstPage():
-    return render_template('about.html')
+    return render_template('about4guest.html')
 
 #guest page
 @app.route('/home_guest')
@@ -96,13 +96,20 @@ def login():
         return redirect(url_for('sign_in'))
 
 ########################################################################################################
-
+@app.route('/about4user')
+@flask_login.login_required
+def about4user():
+    return render_template('about4user.html', user=flask_login.current_user)
 #home of user which is logged in
 @app.route('/home_user')
 @flask_login.login_required
 def protected():
     #renders webpage with current user data
     return render_template('home_user.html', user=flask_login.current_user)
+@app.route('/profile')
+@flask_login.login_required
+def show_user_profile():
+    return render_template("profile.html",user=flask_login.current_user)
 
 ##########################################################################################################
 
@@ -285,18 +292,12 @@ def clear_wishlist():
 @flask_login.login_required
 def logout():
     flask_login.logout_user()
-    return render_template('about.html')
-
-@app.route('/profile')
-@flask_login.login_required
-def show_user_profile():
-    return render_template("profile.html",user=flask_login.current_user)
-    
+    return render_template('about4guest.html')
     
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
-    return 'Unauthorized access', 401
+    return redirect(url_for('firstPage'))
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5000, threaded=True) #running the app on localhost:5000
