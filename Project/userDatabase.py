@@ -1,5 +1,6 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+import bcrypt
 
 uri = "mongodb+srv://TavishiS:Abcd%2A1234@users.wlgnv.mongodb.net/?retryWrites=true&w=majority&appName=Users"
 
@@ -53,13 +54,31 @@ def clear_wishlist(user_name):
     if collection.find_one({"username": user_name}):
         collection.update_one({"username": user_name},{"$set": {"wishlist": []}})
 
-    
+def update_password(user_name, old_password, new_password, recheck_new_password):
+    user = collection.find_one({"username": user_name})
+    if user:
+        if not bcrypt.checkpw(old_password.encode('utf-8'), user["password"].encode('utf-8')): # comparing old password binary with database password binary
+            return "Old password mismatch"
+        elif new_password != recheck_new_password:               
+            return "New password and Confirm password mismatch"
+        else:          
+            hashed_ = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+            collection.update_one(
+            {"username" : user_name}, {"$set" :{"password" : hashed_.decode('utf-8')}}
+            )
+            return "Password changed successfully"
+        
+def delete_user(user_name):
+    collection.delete_one({"username": user_name})
     
 if __name__ == "__main__":
     # add_to_wishlist("tavi", "aunty no 1")
-    clear_wishlist("tavi")
+    # clear_wishlist("tavi")
     # remove_from_wishlist("tavi", "Allah hu akbar")
     # remove_from_wishlist("tavi", "bajirao mastani")
+    # print(update_password("tavi", "kashish", "girl", "girl"))
+    # delete_user("tavivi")
+    
     #collection.delete_one({"username": "shree123"}) #delete a user if found
     #collection.delete_many({}) # to delte all users
     display_data()
