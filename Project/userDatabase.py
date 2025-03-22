@@ -28,12 +28,12 @@ def display_data():
     print("-------------------------------------------------------")
     # Close the connection
 
-def add_to_wishlist(user_name, movies_list):
+def add_to_wishlist(user_name, movie):
     # for movie in movies_list:
-        if not is_movie_in_wishlist(user_name, movies_list):
+        if not is_movie_in_wishlist(user_name, movie):
             collection.update_one(
                 {"username": user_name},
-                {"$push": {"wishlist": movies_list}}        
+                {"$push": {"wishlist": movie}}        
         )
             
 
