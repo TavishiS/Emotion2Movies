@@ -43,7 +43,7 @@ body {
 
 /* Button styling */
 .button {
-    background: linear-gradient(70deg, rgba(229, 9, 20, 0.9), rgba(255, 149, 0, 0.8)); /* Red to golden gradient */
+    background: linear-gradient(70deg, rgba(255, 149, 0, 0.8), rgba(229, 9, 20, 0.9)); /* Red to golden gradient */
     color: #fff;
     padding: 6px 16px; /* Reduced padding */
     border: none;
