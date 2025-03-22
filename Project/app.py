@@ -270,6 +270,13 @@ def logout():
     flask_login.logout_user()
     return render_template('about.html')
 
+@app.route('/profile')
+@flask_login.login_required
+def show_user_profile():
+    return render_template("profile.html",user=flask_login.current_user)
+    
+    
+
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     return 'Unauthorized access', 401
