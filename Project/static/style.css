@@ -117,7 +117,7 @@ tr:last-child td {
 
 /* User info styling */
 .user-info {
-    position: absolute;
+    position: relative;
     top: 10px;
     right: 10px;
     background: rgba(50, 50, 50, 0.7);
@@ -161,4 +161,204 @@ a:hover {
 @keyframes float {
     0%, 100% { transform: translateY(0) rotate(0deg); }
     50% { transform: translateY(-70px) rotate(180deg); }
+}
+
+
+/* Responsive styles for recommandations.html */
+
+/* 🎬 GENERAL STYLES */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+
+/* 🎬 MOVIE GRID - DESKTOP */
+#movieContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.movie-item {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    width: 30%;  /* 🖥️ 3 movies per row on desktop */
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+.movie-item p {
+    margin: 10px 0;
+}
+
+/* 🎬 TRAILER EMBED */
+.trailer-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.trailer-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* 🎬 WISHLIST BUTTON */
+.wishlist-button {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.wishlist-button:hover {
+    background-color: darkred;
+}
+
+/* 🎬 RESPONSIVE DESIGN FOR MOBILE */
+@media (max-width: 1024px) {
+    .movie-item {
+        width: 45%; /* 📱 2 movies per row on tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    #movieContainer {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .movie-item {
+        width: 90%; /* 📱 1 movie per row on small screens */
+    }
+
+    .trailer-container {
+        width: 100%;
+        height: auto;
+    }
+
+    .trailer-container iframe {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    .wishlist-button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+
+/* 🎬 NAVBAR STYLES */
+.navbar {
+    position: fixed; /* Stick to the top */
+    top: 0;
+    left: 0;
+    width: 97%;
+    background: rgba(20, 20, 20, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+/* Adjust body to prevent content from being hidden under navbar */
+body {
+    padding-top: 70px; /* Adjust based on navbar height */
+}
+
+/* 🎬 Horizontal Navigation Menu */
+.nav-menu {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.nav-menu a:hover {
+    background: rgba(229, 9, 20, 0.7);
+    color: white;
+}
+
+/* 📱 Mobile Menu Icon */
+.menu-icon {
+    font-size: 26px;
+    color: white;
+    display: none;
+    cursor: pointer;
+}
+
+/* 🛠️ Responsive Styling */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 20px;
+    }
+
+    .menu-icon {
+        display: block; /* Show menu icon on mobile */
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 100%; /* Dropdown effect */
+        left: 0;
+        width: 100%;
+        background: rgba(20, 20, 20, 0.95);
+        flex-direction: column;
+        text-align: center;
+        padding: 0;
+        display: none;
+    }
+
+    .nav-menu a {
+        padding: 15px;
+        font-size: 18px;
+        display: block;
+        width: 100%;
+    }
+
+    .nav-menu.show {
+        display: flex;
+    }
 }

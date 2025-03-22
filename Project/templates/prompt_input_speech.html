@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Record and Transcribe Audio</title>
+    <title>MoodFlix</title>
     <link rel="stylesheet" href="static/style.css">
+    <link rel="icon" href="static/MoodFlix_LOGO.png" type="image/png">
 </head>
 <body>
     <div class="floating-shapes">
@@ -13,14 +14,20 @@
         <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
         <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
     </div>
-    
+    <header class="navbar">
+        <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;">
+        <nav class="nav-menu">
+            <a href="/">About</a>
+            <a href="/home_user">Home</a>
+            <a href="/prompt_input">Prompt to search</a>
+            <a href="/prompt_input_speech">Speak to search</a>
+            <a href="/form_input">Form to search</a>
+            <a href="/profile">Profile</a>
+            <a href="/contact">Contact Us</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
     <div class="container">
-        <div class="user-info" style="text-align: center;">
-            <p>Username: <span id="username">{{user.id}}</span></p>
-            <p>Email: <span id="email">{{user.email}}</span></p>
-            <button class="button logout-btn" onclick="window.location.href='logout'">Logout</button>
-        </div>
-        
         <div class="header">
             <h1>Record and Transcribe Audio</h1>
         </div>

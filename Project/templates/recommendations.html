@@ -5,8 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Recommendations</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="static/MoodFlix_LOGO.png" type="image/png">
 </head>
 <body>
+    <header class="navbar">
+        <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;">
+        <nav class="nav-menu">
+            <a href="/">About</a>
+            <a href="/home_user">Home</a>
+            <a href="/prompt_input">Prompt to search</a>
+            <a href="/prompt_input_speech">Speak to search</a>
+            <a href="/form_input">Form to search</a>
+            <a href="/profile">Profile</a>
+            <a href="/contact">Contact Us</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
     <div class="container">
         <h1>Recommended Movies</h1>
         <div id="movieContainer">
@@ -66,7 +80,6 @@
                             });
                             
                             if (!response.ok) {
-                                alert("hi")
                                 throw new Error(`Failed to ${isInWishlist ? "remove from" : "add to"} wishlist`);
                             }
                             
@@ -93,8 +106,8 @@
         
                     if (trailerkeys[ct]) {
                         const trailerIframe = document.createElement("iframe");
-                        trailerIframe.width = "560";
-                        trailerIframe.height = "315";
+                        //trailerIframe.width = "560";
+                        //trailerIframe.height = "315";
                         trailerIframe.src = `https://www.youtube.com/embed/${trailerkeys[ct]}`;
                         trailerIframe.frameBorder = "0";
                         trailerIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
