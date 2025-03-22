@@ -8,12 +8,6 @@
     <link rel="icon" href="static/MoodFlix_LOGO.png" type="image/png">
 </head>
 <body>
-    <div class="floating-shapes">
-        <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
-        <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
-        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
-        <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
-    </div>
     <header class="navbar">
         <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;">
         <nav class="nav-menu">
@@ -27,117 +21,68 @@
             <a href="/logout">Logout</a>
         </nav>
     </header>
+
     <div class="container">
         <h2>🎬 Movie Recommender</h2>
 
-        <label for="genre">Genre:</label>
-        <select id="genre" class="input-box">
-            <option value="">Any</option>
-            <option value="28">Action</option>
-            <option value="12">Adventure</option>
-            <option value="16">Animation</option>
-            <option value="35">Comedy</option>
-            <option value="80">Crime</option>
-            <option value="18">Drama</option>
-            <option value="10751">Family</option>
-            <option value="14">Fantasy</option>
-            <option value="36">History</option>
-            <option value="27">Horror</option>
-            <option value="10402">Music</option>
-            <option value="9648">Mystery</option>
-            <option value="10749">Romance</option>
-            <option value="878">Science Fiction</option>
-            <option value="10770">TV Movie</option>
-            <option value="53">Thriller</option>
-            <option value="10752">War</option>
-            <option value="37">Western</option>
-        </select>
+        <form id="movieForm" action="/recommend_form" method="POST">
+            <label for="genre">Genre:</label>
+            <select name="genre" class="input-box">
+                <option value="">Any</option>
+                <option value="28">Action</option>
+                <option value="12">Adventure</option>
+                <option value="16">Animation</option>
+                <option value="35">Comedy</option>
+                <option value="80">Crime</option>
+                <option value="18">Drama</option>
+                <option value="10751">Family</option>
+                <option value="14">Fantasy</option>
+                <option value="36">History</option>
+                <option value="27">Horror</option>
+                <option value="10402">Music</option>
+                <option value="9648">Mystery</option>
+                <option value="10749">Romance</option>
+                <option value="878">Science Fiction</option>
+                <option value="10770">TV Movie</option>
+                <option value="53">Thriller</option>
+                <option value="10752">War</option>
+                <option value="37">Western</option>
+            </select>
 
-        <label for="language">Language:</label>
-        <select id="language" class="input-box">
-            <option value="">Any</option>
-            <option value="en">English</option>
-            <option value="hi">Hindi</option>
-            <option value="fr">French</option>
-            <option value="es">Spanish</option>
-            <option value="de">German</option>
-            <option value="it">Italian</option>
-            <option value="zh">Chinese</option>
-            <option value="ja">Japanese</option>
-            <option value="ko">Korean</option>
-            <option value="ru">Russian</option>
-            <option value="ar">Arabic</option>
-            <option value="pt">Portuguese</option>
-        </select>
+            <label for="language">Language:</label>
+            <select name="language" class="input-box">
+                <option value="">Any</option>
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="fr">French</option>
+                <option value="es">Spanish</option>
+                <option value="de">German</option>
+                <option value="it">Italian</option>
+                <option value="zh">Chinese</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="ru">Russian</option>
+                <option value="ar">Arabic</option>
+                <option value="pt">Portuguese</option>
+            </select>
 
-        <label for="minRating">Rating Range (1-10):</label>
-        <input type="number" id="minRating" min="1" max="10" value="5" class="input-box">
-        <input type="number" id="maxRating" min="1" max="10" value="10" class="input-box">
+            <label for="minRating">Rating Range (1-10):</label>
+            <input type="number" name="minRating" min="1" max="10" value="5" class="input-box">
+            <input type="number" name="maxRating" min="1" max="10" value="10" class="input-box">
 
-        <label for="startYear">Year Range:</label>
-        <input type="number" id="startYear" min="1900" max="2024" value="2000" class="input-box">
-        <input type="number" id="endYear" min="1900" max="2024" value="2024" class="input-box">
+            <label for="startYear">Year Range:</label>
+            <input type="number" name="startYear" min="1900" max="2024" value="2000" class="input-box">
+            <input type="number" name="endYear" min="1900" max="2024" value="2024" class="input-box">
 
-        <label for="minDuration">Duration Range (mins):</label>
-        <input type="number" id="minDuration" min="30" max="300" value="60" class="input-box">
-        <input type="number" id="maxDuration" min="30" max="300" value="180" class="input-box">
+            <label for="minDuration">Duration Range (mins):</label>
+            <input type="number" name="minDuration" min="30" max="300" value="60" class="input-box">
+            <input type="number" name="maxDuration" min="30" max="300" value="180" class="input-box">
 
-        <button class="button" onclick="fetchMovies()">Find Movies</button>
+            <button type="submit" class="button">Find Movies</button>
+        </form>
 
         <h3>Recommended Movies:</h3>
         <div id="movieContainer" class="movie-container"></div>
     </div>
-
-    <script>
-        async function fetchMovies() {
-            const genre = document.getElementById("genre").value;
-            const language = document.getElementById("language").value;
-            const minRating = document.getElementById("minRating").value;
-            const maxRating = document.getElementById("maxRating").value;
-            const startYear = document.getElementById("startYear").value;
-            const endYear = document.getElementById("endYear").value;
-            const minDuration = document.getElementById("minDuration").value;
-            const maxDuration = document.getElementById("maxDuration").value;
-
-            const url = `/recommend_form?genre=${genre}&language=${language}&minRating=${minRating}&maxRating=${maxRating}&startYear=${startYear}&endYear=${endYear}&minDuration=${minDuration}&maxDuration=${maxDuration}`;
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                const movieContainer = document.getElementById("movieContainer");
-                movieContainer.innerHTML = "";
-
-                if (!data.movies || data.movies.length === 0) {
-                    movieContainer.innerHTML = "<p>No matching movies found.</p>";
-                    return;
-                }
-
-                data.movies.forEach(movie => {
-                    const movieDiv = document.createElement("div");
-                    movieDiv.classList.add("movie-item");
-                    movieDiv.innerHTML = `<p>${movie.title} (${movie.year}) - ⭐ ${movie.rating}</p>`;
-                    
-                    if (movie.trailer) {
-                        const trailerIframe = document.createElement("iframe");
-                        trailerIframe.width = "560";
-                        trailerIframe.height = "315";
-                        trailerIframe.src = `https://www.youtube.com/embed/${movie.trailer}`;
-                        trailerIframe.frameBorder = "0";
-                        trailerIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-                        trailerIframe.allowFullscreen = true;
-                        movieDiv.appendChild(trailerIframe);
-                    }
-                    
-                    movieContainer.appendChild(movieDiv);
-                });
-            } catch (error) {
-                console.error("Error fetching movies:", error);
-                document.getElementById("movieContainer").innerHTML = `<p class="error-message">Error fetching movies. Please try again later.</p>`;
-            }
-        }
-    </script>
 </body>
 </html>

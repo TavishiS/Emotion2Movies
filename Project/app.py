@@ -113,20 +113,27 @@ def form_input():
     return render_template('form_input.html')
 
 #triggers on submitting the form
-@app.route('/recommend_form', methods=['GET'])
+@app.route('/recommend_form', methods=['GET','POST'])
 @flask_login.login_required
 def recommend_movies():
     # Get parameters from query string
-    genre = request.args.get("genre", "")
-    language = request.args.get("language", "")
-    rating_min = request.args.get("minRating", 0)
-    rating_max = request.args.get("maxRating", 10)
-    year_min = request.args.get("startYear", 1900)
-    year_max = request.args.get("endYear", 2025)
-    duration_min = request.args.get("minDuration", 0)
-    duration_max = request.args.get("maxDuration", 300)
-
-    return form2movie.recommand_movies(genre, language, rating_min, rating_max, year_min, year_max, duration_min, duration_max)
+    genre = request.form.get("genre", "")
+    language = request.form.get("language", "")
+    rating_min = int(request.form.get("minRating", 0))
+    rating_max = int(request.form.get("maxRating", 10))
+    year_min = int(request.form.get("startYear", 1900))
+    year_max = int(request.form.get("endYear", 2025))
+    duration_min = int(request.form.get("minDuration", 0))
+    duration_max = int(request.form.get("maxDuration", 300))
+    movies= form2movie.recommand_movies(genre, language, rating_min, rating_max, year_min, year_max, duration_min, duration_max)
+    movies= movies.get_json().get('movies', [])
+    made_prompt = f"Movies with genre {genre}, language {language}, rating between {rating_min} and {rating_max}, year between {year_min} and {year_max}, duration between {duration_min} and {duration_max}"
+    trailer_keys = []
+    for movie in movies:
+        trailer_keys.append(movie['trailer'])
+    movie_list = userDatabase.collection.find_one({"username": flask_login.current_user.id})['wishlist']
+    
+    return render_template('recommendations.html', movie_data=movies, trailer_keys=trailer_keys, given_prompt=made_prompt,wishlist_movies=movie_list , user=flask_login.current_user)
 
 ##########################################################################################################    
 @app.route('/prompt_input')
@@ -257,6 +264,16 @@ def remove_from_wishlist():
             return jsonify({"message": f"'{movie_title}' removed from wishlist", "wishlist": movie_list})
         else:
             return jsonify({"error": f"'{movie_title}' not found in wishlist"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route("/clear_wishlist", methods=["POST"])
+@flask_login.login_required
+def clear_wishlist():
+    try:
+        userDatabase.clear_wishlist(flask_login.current_user.id)
+        return jsonify({"message": "Wishlist cleared"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
