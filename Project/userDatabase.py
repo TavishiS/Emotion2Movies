@@ -29,11 +29,11 @@ def display_data():
     # Close the connection
 
 def add_to_wishlist(user_name, movies_list):
-    for movie in movies_list:
-        if not is_movie_in_wishlist(user_name, movie):
+    # for movie in movies_list:
+        if not is_movie_in_wishlist(user_name, movies_list):
             collection.update_one(
                 {"username": user_name},
-                {"$push": {"wishlist": movie}}        
+                {"$push": {"wishlist": movies_list}}        
         )
             
 
@@ -49,14 +49,14 @@ def remove_from_wishlist(user_name, movie_name):
             {"$pull": {"wishlist":movie_name}}
         )
 
-# def clear_wishlist(user_name):
-#     if collection.find_one({"username": user_name}):
-#         collection.update_one({"wishlis})
+def clear_wishlist(user_name):
+    if collection.find_one({"username": user_name}):
+        collection.update_one({"$set": {"wishlist": []}})
 
     
     
 if __name__ == "__main__":
-    add_to_wishlist("tavi", ["bajirao mastani", "Ghost Ship"])
+    add_to_wishlist("tavi", "aunty no 1")
     remove_from_wishlist("tavi", "Allah hu akbar")
     # remove_from_wishlist("tavi", "bajirao mastani")
     #collection.delete_one({"username": "shree123"}) #delete a user if found
