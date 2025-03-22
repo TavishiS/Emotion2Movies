@@ -22,23 +22,75 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", async function () {
+            console.log("DOM fully loaded and parsed");
+        
             try {
                 const movies = {{ movie_data | tojson }};
-                const trailerkeys = {{trailer_keys|tojson}} ;
+                const trailerkeys = {{ trailer_keys | tojson }};
+                let wishlist = new Set({{ wishlist_movies | tojson }}); // Store wishlist as a Set
                 const movieContainer = document.getElementById("movieContainer");
+        
                 movieContainer.innerHTML = "";
-
+        
                 if (!movies || movies.length === 0) {
                     movieContainer.innerHTML = "<p>No matching movies found.</p>";
                     return;
                 }
+        
                 let ct = 0;
                 movies.forEach(movie => {
+                    console.log("Processing movie:", movie.title);
+        
                     const movieDiv = document.createElement("div");
                     movieDiv.classList.add("movie-item");
-                    movieDiv.innerHTML = `<p><strong>${movie.title}</strong> (${movie.release_date || 'N/A'}) - ⭐ ${movie.popularity || 'N/A'}</p>`;
-                    
-                    // Display trailer if available
+        
+                    const addButton = document.createElement("button");
+                    addButton.classList.add("button", "wishlist-button");
+                    addButton.textContent = wishlist.has(movie.title) ? "Remove from Wishlist" : "Add to Wishlist";
+        
+                    addButton.addEventListener("click", async function(event) {
+                        console.log("Button clicked for:", movie.title);
+        
+                        const isInWishlist = wishlist.has(movie.title);
+                        const action = isInWishlist ? "remove_from_wishlist" : "add_to_wishlist";
+                        const originalText = addButton.textContent; // Store the original text
+        
+                        // **Show immediate feedback**
+                        addButton.textContent = isInWishlist ? "Removing..." : "Adding...";
+        
+                        try {
+                            const response = await fetch(`/${action}`, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ movie_title: movie.title })
+                            });
+                            
+                            if (!response.ok) {
+                                alert("hi")
+                                throw new Error(`Failed to ${isInWishlist ? "remove from" : "add to"} wishlist`);
+                            }
+                            
+                            // **Parse JSON response from server**
+                            const data = await response.json();
+                            console.log("Response from server:", data);
+        
+                            if (data.wishlist) {
+                                wishlist = new Set(data.wishlist); // Update wishlist with fresh data
+                            }
+        
+                            // **Update button text based on updated wishlist**
+                            addButton.textContent = wishlist.has(movie.title) ? "Remove from Wishlist" : "Add to Wishlist";
+        
+                        } catch (error) {
+                            console.error("Error updating wishlist:", error);
+                            alert(`Error: Could not ${isInWishlist ? "remove from" : "add to"} wishlist.`);
+                            addButton.textContent = originalText; // **Revert the button text on failure**
+                        }
+                    });
+        
+                    movieDiv.appendChild(addButton);
+                    movieDiv.insertAdjacentHTML("beforeend", `<p><strong>${movie.title}</strong> (${movie.release_date || 'N/A'}) - ⭐ ${movie.popularity || 'N/A'}</p>`);
+        
                     if (trailerkeys[ct]) {
                         const trailerIframe = document.createElement("iframe");
                         trailerIframe.width = "560";
@@ -49,17 +101,17 @@
                         trailerIframe.allowFullscreen = true;
                         movieDiv.appendChild(trailerIframe);
                     }
-
+        
                     movieContainer.appendChild(movieDiv);
                     ct++;
                 });
-
+        
             } catch (error) {
                 console.error("Error fetching movies:", error);
                 document.getElementById("movieContainer").innerHTML = `<p class="error-message">Error fetching movies. Please try again later.</p>`;
             }
-        });
-    </script>
+        });        
+    </script>    
 
     
 </body>

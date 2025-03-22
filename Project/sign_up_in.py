@@ -22,7 +22,12 @@ def signup():
         if existing_user:
             return jsonify({"message": "Username or email already registered!"})  # You can also render an error message in HTML
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        user_data = {"username": username, "email": email, "password": hashed_password.decode('utf-8'), "wishlist": []}
+        user_data = {
+            "username": username,
+            "email": email,
+            "password": hashed_password.decode('utf-8'),
+            "wishlist": []
+        }
         userDatabase.collection.insert_one(user_data)
 
         return jsonify({"message": "User registered successfully!"})

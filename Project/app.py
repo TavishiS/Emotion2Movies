@@ -213,11 +213,53 @@ def model_run():
         print(prompt_in)
         movie_data, movie_ids = search_movies_try.search_movies(prompt_in)
         trailer_keys = form2movie.promptID_to_movie(movie_ids)  # Get trailer keys as a list
+        movie_list = userDatabase.collection.find_one({"username": flask_login.current_user.id})['wishlist']
+        
     except Exception as e:
         print(f"Error: {e}")
         trailer_keys = []
         movie_data = []
-    return render_template('recommendations.html', movie_data=movie_data, trailer_keys=trailer_keys, given_prompt=prompt_in)
+        movie_list = []
+    return render_template('recommendations.html', movie_data=movie_data, trailer_keys=trailer_keys, given_prompt=prompt_in,wishlist_movies=movie_list , user=flask_login.current_user)
+
+##########################################################################################################
+@app.route("/add_to_wishlist", methods=["POST"])
+@flask_login.login_required
+def add_to_wishlist():
+    try:
+        data = request.get_json()
+        movie_title = data.get("movie_title")
+
+        if not movie_title:
+            return jsonify({"error": "Movie title is required"}), 400
+
+        userDatabase.add_to_wishlist(flask_login.current_user.id, movie_title)
+        movie_list = userDatabase.collection.find_one({"username": flask_login.current_user.id})['wishlist']
+        return jsonify({"message": f"'{movie_title}' added to wishlist", "wishlist": movie_list}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/remove_from_wishlist", methods=["POST"])
+@flask_login.login_required
+def remove_from_wishlist():
+    try:
+        data = request.get_json()
+        movie_title = data.get("movie_title")
+
+        if not movie_title:
+            return jsonify({"error": "Movie title is required"}), 400
+
+        movie_list = userDatabase.collection.find_one({"username": flask_login.current_user.id})['wishlist']
+        if movie_title in movie_list:
+            userDatabase.remove_from_wishlist(flask_login.current_user.id, movie_title)
+            movie_list = userDatabase.collection.find_one({"username": flask_login.current_user.id})['wishlist']
+            return jsonify({"message": f"'{movie_title}' removed from wishlist", "wishlist": movie_list})
+        else:
+            return jsonify({"error": f"'{movie_title}' not found in wishlist"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 ##########################################################################################################
 
