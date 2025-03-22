@@ -51,13 +51,14 @@ def remove_from_wishlist(user_name, movie_name):
 
 def clear_wishlist(user_name):
     if collection.find_one({"username": user_name}):
-        collection.update_one({"$set": {"wishlist": []}})
+        collection.update_one({"username": user_name},{"$set": {"wishlist": []}})
 
     
     
 if __name__ == "__main__":
-    add_to_wishlist("tavi", "aunty no 1")
-    remove_from_wishlist("tavi", "Allah hu akbar")
+    # add_to_wishlist("tavi", "aunty no 1")
+    clear_wishlist("tavi")
+    # remove_from_wishlist("tavi", "Allah hu akbar")
     # remove_from_wishlist("tavi", "bajirao mastani")
     #collection.delete_one({"username": "shree123"}) #delete a user if found
     #collection.delete_many({}) # to delte all users
