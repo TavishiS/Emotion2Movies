@@ -27,17 +27,8 @@
             <a href="/logout">Logout</a>
         </nav>
     </header>
-    
-        
-        <!-- <div class="user-info" style="text-align: center;">
-            <p>Username: <span id="username">{{user.id}}</span></p>
-            <p>Email: <span id="email">{{user.email}}</span></p>
-            <button class="button logout-btn" onclick="window.location.href='logout'">Logout</button>
-        </div>  -->
-     
 
     <div class="container">
-
         <div class="header">
             <h1>Recommend Movies</h1>
         </div>
@@ -51,6 +42,8 @@
         <div class="table-container">
             <h2>Hi {{user.id}}, here is your wishlist of movies!</h2>
             <button class="button refresh-btn" onclick="refreshWishlist()">🔄 Refresh List</button>
+            <button class="button clear-btn" onclick="clearWishlist()">🗑️ Clear Wishlist</button>
+
             <table id="wishlistTable">
                 <tr>
                     <th>Movie Title</th>
@@ -108,24 +101,52 @@
             }
         }
 
+        async function clearWishlist() {
+            if (!confirm("Are you sure you want to clear your entire wishlist? This action cannot be undone!")) {
+                return; // If user cancels, exit function
+            }
+
+            try {
+                const response = await fetch("/clear_wishlist", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                });
+
+                const data = await response.json();
+                console.log("Clear wishlist response:", data);
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Failed to clear wishlist");
+                }
+
+                wishlist.clear();
+                document.querySelector("#wishlistTable").innerHTML = `
+                    <tr><th>Movie Title</th><th>Action</th></tr>
+                `;
+
+                alert("Wishlist cleared successfully!");
+            } catch (error) {
+                console.error("Error clearing wishlist:", error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+
         function refreshWishlist() {
             location.reload(); // Reloads the entire page
         }
-        
-        
 
         document.addEventListener('mousemove', (e) => {
             const shapes = document.querySelectorAll('.shape');
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
-            
+
             shapes.forEach(shape => {
                 const shapeX = parseFloat(shape.style.left) / 100;
                 const shapeY = parseFloat(shape.style.top) / 100;
-                
+
                 const moveX = (x - 0.5) * 20 * (shapeX - 0.5);
                 const moveY = (y - 0.5) * 20 * (shapeY - 0.5);
-                
+
                 shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
             });
         });
