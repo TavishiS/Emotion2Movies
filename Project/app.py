@@ -54,6 +54,10 @@ def firstPage():
 def home():
     return render_template('home_guest.html')
 
+@app.route("/contact_us_guest")
+def contact_us_guest():
+    return render_template("contact_us_guest.html")
+
 ########################################################################################################
 
 #sign up page
@@ -110,6 +114,10 @@ def protected():
 @flask_login.login_required
 def show_user_profile():
     return render_template("profile.html", user=flask_login.current_user)
+
+@app.route("/contact_us_user")
+def contact_us_user():
+    return render_template("contact_us_user.html")
 
 ##########################################################################################################
 

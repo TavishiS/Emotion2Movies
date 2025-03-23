@@ -23,14 +23,14 @@
             <a href="/prompt_input_speech">Speak to search</a>
             <a href="/form_input">Form to search</a>
             <a href="/profile">Profile</a>
-            <a href="/contact">Contact Us</a>
-            <a href="/logout">Logout</a>
+            <a href="/contact_us_user">Contact Us</a>
+            <a style="color: red; font-weight: bold;" href="/logout">Logout</a>
         </nav>
     </header>
 
     <div class="container">
         <div class="header">
-            <h1>Recommend Movies</h1>
+            <h1>!! MoodFlix !!</h1>
         </div>
 
         <div class="button-container" style="text-align: center;">
@@ -38,7 +38,7 @@
             <button class="button" onclick="window.location.href='prompt_input_speech'">Speak Out Your Thoughts</button>
             <button class="button" onclick="window.location.href='form_input'">No Ideas, Need Some Questions</button>
         </div>
-
+        <br><br>
         <div class="table-container">
             <h2>Hi {{user.id}}, here is your wishlist of movies!</h2>
             <button class="button refresh-btn" onclick="refreshWishlist()">🔄 Refresh List</button>
