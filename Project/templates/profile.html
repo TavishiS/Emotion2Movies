@@ -8,13 +8,6 @@
     <link rel="icon" href="../static/MoodFlix_LOGO.png" type="image/png">
 </head>
 <body>
-    <div class="floating-shapes">
-        <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
-        <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
-        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
-        <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
-    </div>
-<body>
     <header class="navbar">
         <img src="../static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;">
         <nav class="nav-menu">
@@ -35,44 +28,13 @@
         </div>
 
         <div class="user-info">
-            <p><strong>Username:</strong> <span id="username">{{user.id }}</span></p>
+            <p><strong>Username:</strong> <span id="username">{{user.id}}</span></p>
             <p><strong>Email:</strong> <span id="email">{{user.email}}</span></p>
         </div>
 
-        <div class="change-password">
-            <h2>Change Password</h2>
-            <form id="passwordForm" onsubmit="changePassword(event)">
-                <label for="oldPassword">Old Password:</label>
-                <input type="password" id="oldPassword" name="oldPassword" required>
-
-                <label for="newPassword">New Password:</label>
-                <input type="password" id="newPassword" name="newPassword" required>
-
-                <button type="submit" class="button">Update Password</button>
-            </form>
+        <div class="change-password" style="text-align: center; margin-top: 52px;">
+            <a href="/change_password" class="button">Change Password</a>
         </div>
     </div>
-
-    <script>
-        async function changePassword(event) {
-            event.preventDefault();
-            const oldPassword = document.getElementById("oldPassword").value;
-            const newPassword = document.getElementById("newPassword").value;
-
-            try {
-                const response = await fetch("/change_password", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ old_password: oldPassword, new_password: newPassword })
-                });
-
-                const data = await response.json();
-                alert(data.message);
-            } catch (error) {
-                console.error("Error changing password:", error);
-                alert("Failed to update password.");
-            }
-        }
-    </script>
 </body>
 </html>

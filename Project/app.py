@@ -115,6 +115,27 @@ def protected():
 def show_user_profile():
     return render_template("profile.html", user=flask_login.current_user)
 
+# Route to render the change password page
+@app.route('/change_password', methods=['GET'])
+def change_password_page():
+    return render_template('change_password.html', user=flask_login.current_user)
+
+# Route to handle the password change request
+@app.route('/change_password', methods=['POST'])
+def change_password():
+    data = request.json
+    username = data.get("username")
+    old_password = data.get("old_password")
+    new_password = data.get("new_password")
+    recheck_new_password = data.get("recheck_new_password")
+
+    if new_password != recheck_new_password:
+        return jsonify({"message": "New passwords do not match!"})
+
+    # Call function to update password
+    result = userDatabase.update_password(username, old_password, new_password, recheck_new_password)
+    return jsonify({"message": result})
+
 @app.route("/contact_us_user")
 def contact_us_user():
     return render_template("contact_us_user.html")
