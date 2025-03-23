@@ -49,10 +49,9 @@ Before running the app, we recommend the following:
 ## Repository Structure
 1. **UML files** - Contains UML diagrams.
 2. **Project** - Main project files.
-3. **Instance** - Stores the local SQLite database.
-4. **Learning** - Experimental files for understanding new tools and technologies.
-5. **MoM** - Minutes of Meetings, stored regularly.
-6. **SRS** - Software Requirement Specification document.
+3. **Learning** - Experimental files for understanding new tools and technologies.
+4. **MoM** - Minutes of Meetings, stored regularly.
+5. **SRS** - Software Requirement Specification document.
 
 ---
 
