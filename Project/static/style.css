@@ -5,7 +5,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 60px;
     background: #141414;
     min-height: 100vh;
     display: flex;
@@ -27,11 +27,37 @@ body::before {
     z-index: -1;
 }
 
+/* Floating shapes effect */
+.floating-shapes {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(70deg, rgba(255, 111, 0, 0.5), rgb(18, 1, 172,0.5));
+    animation: circleMove 15s infinite;
+}
+
+@keyframes circleMove {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(100px, 0) rotate(180deg); }
+    50% { transform: translate(100px, 100px) rotate(360deg); }
+    75% { transform: translate(0, 100px) rotate(180deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
 /* Container styling */
 .container {
     width: 90%;
     max-width: 1250px;
-    background: rgba(20, 20, 20, 0.9);
+    background: rgba(20, 20, 20, 0.7);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 40px;
@@ -43,7 +69,7 @@ body::before {
 
 /* Header styling */
 .header {
-    background-color: rgba(229, 9, 20, 0.2);
+    background: linear-gradient(70deg, rgb(255, 204, 0), rgb(149, 0, 255));
     color: #fff;
     padding: 10px;
     text-align: center;
@@ -168,9 +194,6 @@ a:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
 }
-body {
-    padding-top: 70px;
-}
 
 .nav-menu {
     display: flex;
@@ -188,6 +211,53 @@ body {
 .nav-menu a:hover {
     background: rgba(229, 9, 20, 0.7);
     color: white;
+}
+
+/* 🎬 MOVIE GRID - DESKTOP */
+#movieContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.movie-item {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    width: 30%;  /* 🖥️ 3 movies per row on desktop */
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+.movie-item p {
+    margin: 10px 0;
+}
+
+/* 🎬 TRAILER EMBED */
+.trailer-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.trailer-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* 🎬 WISHLIST BUTTON */
+.wishlist-button {
+    width: 80%;
+    transition: 0.3s;
+}
+
+.wishlist-button:hover {
+    background-color: darkred;
 }
 
 /* Responsive Design */
@@ -229,3 +299,5 @@ body {
         padding: 10px;
     }
 }
+
+
