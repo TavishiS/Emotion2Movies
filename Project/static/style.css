@@ -127,7 +127,7 @@ tr:last-child td {
 .input-box {
     width: 100%;
     padding: 12px;
-    margin: 10px 0;
+    margin: 10px 0px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     background: rgba(50, 50, 50, 0.7);
@@ -260,44 +260,71 @@ a:hover {
     background-color: darkred;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
+/**************************************************************************************************************/
+
+/* Responsive Styles for Small Screens */
+@media (max-width: 768px) {
+    body {
+        padding: 30px;
+        align-items: flex-start;
+        text-align: center;
+    }
+
     .container {
         width: 95%;
         padding: 20px;
+        margin-top: 85px;
     }
-    .navbar {
-        flex-direction: column;
-        text-align: center;
+
+    .header {
+        font-size: 18px;
+        padding: 8px;
     }
-    .nav-menu {
-        flex-direction: column;
-        gap: 10px;
-    }
+
     .button {
-        padding: 8px 12px;
         font-size: 14px;
+        padding: 5px 12px;
     }
+
     table {
         font-size: 14px;
     }
+
     th, td {
         padding: 10px;
     }
-}
 
-@media screen and (max-width: 480px) {
-    .container {
-        padding: 15px;
-    }
-    .button {
-        width: 100%;
-        text-align: center;
-    }
     .input-box {
+        width: 90%;
         font-size: 14px;
         padding: 10px;
     }
+
+    .user-info {
+        top: 5px;
+        right: 5px;
+        padding: 10px;
+    }
+
+    .nav-menu {
+        display: none;
+    }
+
+    #logo {
+        margin-left: 138px;
+    }
+    #movieContainer {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .movie-item {
+        width: 90%;
+    }
+
+    .wishlist-button {
+        width: 100%;
+    }
 }
-
-
