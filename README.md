@@ -1,45 +1,115 @@
-This is a repo to build a creative project for our Software Engineering course.
 
-# Emotion (in speech) based movie player
-We will recommend movie on the basis of your emotions :)
+# MoodFlix 
+<p align="left">
+  <img src="Project/static/MoodFlix_LOGO.png" alt="MoodFlix Logo" width="150">
+</p>
 
-# Content of repo :
-1. Folder "UML files" containing UML diagrams
-2. Folder "Project" containing Project files
-3. Folder "instance" containing local database (sql-lite)
-4. Folder "learning" containing things that are created just for understanding new tools and technology
-5. Folder "MoM" to store Minutes of the Meetings on a regular basis
-6. Folder "SRS" to store requirements document : https://1drv.ms/w/c/8039175bd1074318/EbC3cY1hmiVAhf5rpwh-T7IBVD-M7zzY2zVgdHsKSOSQVg?e=aoOIDt
+## What We Do!
+MoodFlix recommends movies based on your emotions. You can:
+1. Fill out a form to search for movies based on your mood.
+2. Provide a text prompt to find suitable movies.
+3. Speak with our AI to get movie recommendations.
+4. Enhance search results with a single click after viewing recommendations.
 
-# To run app :
-1. clone repository
-3. Install requirements.txt
-4. open repository directory
-5. open "Project" directory (important!)
-6. run 'app.py'
+---
 
+## How to Run the App
+### Prerequisites
+Before running the app, we recommend the following:
+1. Our app is built using **Python 12.8**, so other Python versions may cause compatibility issues with required packages.
+2. Create a **separate virtual environment** and activate it. This helps manage dependencies and avoid conflicts.
 
-# How we run this : 
-1. create AWS EC2 instance.
-2. clone this repo in home
-3. create vertual python environment in ./Emotion2Movies/Project via "python3 -m venv env"
-4. activate env via "source env/bin/activate"
-5. installed requirements.txt via "pip install -r requirements.txt"
-6. run app.py via "python app.py" and terminate that (for confirming all requirements are satisfied or not.)
-7. run command "nohup gunicorn -b 0.0.0.0:5000 -w 4 -k gevent app:app >/dev/null 2>&1 &" to start app (using -w for set number of workers, -k for set type of worker (gevent is very good for handeling multiple requests like hundreds of requests per worker))
-9. now gunicorn will start website at our EC2's local server which is available for us at public address of our EC2
-10. link for website : [http://public_ip_of_aws_instance:5000/](http://65.0.176.225:5000/) 
-note : website will be live when we start from our side  :)
-11. to check which processes are running on your ubuntu machine; run command "top -U \<specific user\>"
-12. to stop gunicorn; run command "pkill gunicorn"
+### Steps to Run
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/TavishiS/Emotion2Movies.git
+   ```
+2. Enter the "Project" directory:
+   ```sh
+   cd Emotion2Movies/Project
+   ```
+3. Install dependencies:
+   ```sh
+   pip install -r requirements.txt
+   ```
+4. Run the application:
+   ```sh
+   python app.py
+   ```
 
-# Why while gunicorn :
-***nohup*** Keeps the process running even after logout so Useful when running on a remote server via SSH.
+---
 
-***-b*** : to bind all allowed ip's
+## Website overlook 
+<p align="center">
+  <img src="UML%20files/working_image.png" alt="UML Diagram" width="600">
+</p>
 
-***-w*** : to set number of workers
+---
 
-***-k gevent*** : to set type of workers to "gevent" that can handle hundreds of requests per worker
+## Repository Structure
+1. **UML files** - Contains UML diagrams.
+2. **Project** - Main project files.
+3. **Instance** - Stores the local SQLite database.
+4. **Learning** - Experimental files for understanding new tools and technologies.
+5. **MoM** - Minutes of Meetings, stored regularly.
+6. **SRS** - Software Requirement Specification document.
 
-***>/dev/null 2>&1 &*** :	Suppresses all logs & runs in background
+---
+
+## How We Deploy on AWS
+1. Create an **AWS EC2 instance**.
+2. Clone this repository in the home directory:
+   ```sh
+   git clone https://github.com/TavishiS/Emotion2Movies.git
+   ```
+3. Navigate to the "Project" directory:
+   ```sh
+   cd Emotion2Movies/Project
+   ```
+4. Create a virtual environment:
+   ```sh
+   python3 -m venv env
+   ```
+5. Activate the virtual environment:
+   ```sh
+   source env/bin/activate
+   ```
+6. Install dependencies:
+   ```sh
+   pip install -r requirements.txt
+   ```
+7. Test by running:
+   ```sh
+   python app.py
+   ```
+   (Ensure all requirements are satisfied before proceeding.)
+8. Start the app using Gunicorn:
+   ```sh
+   nohup gunicorn -b 0.0.0.0:5000 -w 4 -k gevent app:app >/dev/null 2>&1 &
+   ```
+   - `-w 4` sets the number of workers.
+   - `-k gevent` optimizes request handling.
+9. The website will be available at: [http://public_ip_of_aws_instance:5000/](http://65.0.176.225:5000/)
+   *(Note: The website will only be live when we start it from our side.)*
+10. To check running processes:
+    ```sh
+    top -U <specific_user>
+    ```
+11. To stop Gunicorn:
+    ```sh
+    pkill gunicorn
+    ```
+
+---
+
+## Why Use Gunicorn with nohup?
+- **nohup**: Keeps the process running even after logging out, useful for remote servers via SSH.
+- **-b**: Binds the application to all allowed IPs.
+- **-w**: Defines the number of workers for handling multiple requests.
+- **-k gevent**: Sets worker type to "gevent", which efficiently handles hundreds of requests per worker.
+- **>/dev/null 2>&1 &**: Suppresses logs and runs the process in the background.
+
+---
+
+Enjoy using MoodFlix! 🎬😊
+
