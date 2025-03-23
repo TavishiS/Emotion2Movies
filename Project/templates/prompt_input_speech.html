@@ -11,11 +11,11 @@
     <div class="floating-shapes">
         <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
         <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
-        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
+        <div class="shape" style="width: 85px; height: 85px; left: 20%; bottom: 10%;"></div>
         <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
     </div>
     <header class="navbar">
-        <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;">
+        <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;" id="logo">
         <nav class="nav-menu">
             <a href="/about4user">About MoodFlix</a>
             <a href="/home_user">Home</a>
@@ -32,12 +32,16 @@
             <h1>Record Audio</h1>
         </div>
         
-        <button class="button" onclick="startRecording()">Start Recording</button>
-        <button class="button" onclick="stopRecording()">Stop Recording</button>
+        <button id="recordButton" class="button" onclick="startRecording()">Start Recording</button>
         
-        <p><strong>Status:</strong> <span id="status"></span></p>
-        <p><strong>Transcription:</strong> <span id="transcription"></span></p>
-        <p><strong>Emotion:</strong> <span id="emotion"></span></p>
+        <p><strong>Status:</strong> <span id="status">Click button to start recording</span></p>
+        <p><strong>Transcription:</strong> <span id="transcription">Record to show output</span></p>
+        <p><strong>Emotion:</strong> <span id="emotion">Record to show output</span></p>
+        
+        <div id="actionButtons" style="display: none;">
+            <button class="button" id="proceedButton" onclick="proceed()">Proceed</button>
+            <button class="button" id="retakeButton" onclick="retake()">Retake</button>
+        </div>
     </div>
     
     <script>
@@ -56,40 +60,48 @@
                 shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
             });
         });
-    </script>
-    
-    <script>
+
         let mediaRecorder;
         let audioChunks = [];
-    
+
         async function startRecording() {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
-    
+
             mediaRecorder.ondataavailable = event => {
                 audioChunks.push(event.data);
             };
-    
+
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
                 sendAudio(audioBlob);
             };
-    
+
             mediaRecorder.start();
             document.getElementById("status").innerText = "Recording...";
+            
+            // Change button to "Stop Recording"
+            const recordButton = document.getElementById("recordButton");
+            recordButton.innerText = "Stop Recording";
+            recordButton.onclick = stopRecording;
         }
-    
+
         function stopRecording() {
             if (mediaRecorder) {
                 mediaRecorder.stop();
-                document.getElementById("status").innerText = "Recording stopped. Uploading...";
+                document.getElementById("status").innerText = "Recording stopped. Uploading... wait";
+
+                // Disable button and update text while uploading
+                const recordButton = document.getElementById("recordButton");
+                recordButton.disabled = true;
+                recordButton.innerText = "Uploading... wait";
             }
         }
-        
+
         function sendAudio(audioBlob) {
             let formData = new FormData();
             formData.append("audio", audioBlob, "recorded_audio.webm");
-        
+
             fetch("/process_audio_input", {
                 method: "POST",
                 body: formData
@@ -101,19 +113,31 @@
                 document.getElementById("emotion").innerText = data.emotion;
                 audioChunks = [];  // Reset audioChunks to avoid appending old data
 
-                //sending in form of form element
-                const messageInput = document.createElement("input");
-                messageInput.type = "hidden";
-                messageInput.name = "prompt";
-                messageInput.value = `${data.transcription} and my emotion is ${data.emotion}`;
-                const form = document.createElement("form");
-                form.method = "POST";
-                form.action = "/prompt_send_to_model";
-                form.appendChild(messageInput);
-                document.body.appendChild(form);
-                form.submit();
+                // Hide record button and show Proceed/Retake buttons
+                const recordButton = document.getElementById("recordButton");
+                recordButton.style.display = "none";
+                document.getElementById("actionButtons").style.display = "block";
             })
             .catch(error => console.error("Error:", error));
+        }
+
+        function proceed() {
+            // Sending data in a hidden form
+            const messageInput = document.createElement("input");
+            messageInput.type = "hidden";
+            messageInput.name = "prompt";
+            messageInput.value = `${document.getElementById("transcription").innerText} and my emotion is ${document.getElementById("emotion").innerText}`;
+            
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/prompt_send_to_model";
+            form.appendChild(messageInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function retake() {
+            location.reload();
         }
     </script>
 </body>

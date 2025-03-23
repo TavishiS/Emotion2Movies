@@ -6,37 +6,12 @@
     <title>MoodFlix</title>
     <link rel="stylesheet" type="text/css" href="static/style.css">
     <link rel="icon" href="static/MoodFlix_LOGO.png" type="image/png">
-    <style>
-        .input-box {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 16px;
-            text-align: center;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .input-box::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .input-box:focus {
-            border-color: #4CAF50;
-            background: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-    </style>
 </head>
 <body>
     <div class="floating-shapes">
         <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
         <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
-        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
+        <div class="shape" style="width: 85px; height: 85px; left: 20%; bottom: 10%;"></div>
         <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
     </div>
 
@@ -46,7 +21,8 @@
             {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">{{ message }}</div>
+                    <div style="font-weight: bold; color: {{ 'green' if message == 'User registered successfully!' else 'red' }};" class="flash-message {{ category }}">{{ message }}</div>
+                    <br>
                 {% endfor %}
             {% endif %}
             {% endwith %}

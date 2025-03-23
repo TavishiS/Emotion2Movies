@@ -11,11 +11,11 @@
     <div class="floating-shapes">
         <div class="shape" style="width: 60px; height: 60px; left: 10%; top: 20%;"></div>
         <div class="shape" style="width: 80px; height: 80px; right: 15%; bottom: 30%;"></div>
-        <div class="shape" style="width: 40px; height: 40px; left: 20%; bottom: 10%;"></div>
+        <div class="shape" style="width: 85px; height: 85px; left: 20%; bottom: 10%;"></div>
         <div class="shape" style="width: 100px; height: 100px; right: 5%; top: 10%;"></div>
     </div>
     <header class="navbar">
-        <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;">
+        <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;" id="logo">
         <nav class="nav-menu">
             <a href="/about4user">About MoodFlix</a>
             <a href="/home_user">Home</a>
@@ -34,7 +34,7 @@
         <div class="form">
             <form action="/prompt_send_to_model" method="POST">
                 <div class="form-group">
-                    <label for="prompt">Enter a prompt to generate a movie name:</label>
+                    <label for="prompt">Enter a text:</label>
                     <input type="text" id="prompt" name="prompt" class="input-box" placeholder="e.g. 'space adventure' or 'romantic comedy'" required>
                 </div>
                 <div class="button-container">
