@@ -378,6 +378,13 @@ def clear_wishlist():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
+@app.route('/delete_acc')
+@flask_login.login_required
+def delete_acc():
+    userDatabase.delete_user(flask_login.current_user.id)
+    return redirect(url_for('firstPage'))
 
 ##########################################################################################################
 

@@ -42,6 +42,18 @@
         <div class="change-password" style="text-align: center; margin-top: 52px;">
             <a href="/change_password" class="button">Change Password</a>
         </div>
+        <div class="delete_acc" style="text-align: center; margin-top: 40px;">
+            <button type="button" class="button" onclick="confirmDelete()">Delete Account</button>
+        </div>
+
+        <script>
+            function confirmDelete(){
+                var confirmDelete = confirm("Are you sure you want to delete your account?");
+                if (confirmDelete == true) {
+                    window.location.href = "/delete_acc";
+                }
+            }
+        </script>
     </div>
 </body>
 </html>
