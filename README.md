@@ -18,6 +18,7 @@ MoodFlix recommends movies based on your emotions. You can:
 Before running the app, we recommend the following:
 1. Our app is built using **Python 3.12.8**, so other Python versions may cause compatibility issues with required packages.
 2. Create a **separate virtual environment** and activate it. This helps manage dependencies and avoid conflicts.
+3. Download ffmpeg from https://ffmpeg.org/download.html and path of executable file in your environment variables to avoid any failure while using speech to text/ emotion.
 
 ### Steps to Run
 1. Clone the repository:
