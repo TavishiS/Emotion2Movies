@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from flask_cors import CORS
 import sign_up_in
 import flask_login
@@ -7,6 +7,10 @@ from pydub import AudioSegment
 import process_audio
 import io
 from ai_model import search_movies_try
+import random
+import smtplib
+import re
+from email.mime.text import MIMEText
 
 ########################################################################################################
 
@@ -44,6 +48,67 @@ def request_loader(request):
 
 ########################################################################################################
 
+# app.config['MAIL_USERNAME'] = 'tavishi.srivastava060204@gmail.com'  # Replace with your email
+# app.config['MAIL_PASSWORD'] = 'ofjl jzip xpsv xvdk'  # Replace with your email app password
+
+# Function to send OTP via email
+# Replace with your email credentials
+EMAIL_ADDRESS = "tavishi.srivastava060204@gmail.com"
+EMAIL_PASSWORD = "ofjl jzip xpsv xvdk"  # 16-digit App Password, NOT your Gmail password
+
+# Store OTPs temporarily
+otp_storage = {}
+
+# Function to validate email format
+def is_valid_email(email):
+    pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(pattern, email)
+
+
+@app.route('/send_otp', methods=['POST'])
+def send_otp():
+    data = request.json
+    email = data.get("email")
+    
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+    
+    if not email or not is_valid_email(email):  # Check if email is valid
+        return jsonify({"error": "Email address could not be fetched."}), 400
+
+    otp = str(random.randint(100000, 999999))
+    otp_storage[email] = otp  # Store OTP for verification
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            subject = "Your OTP Code"
+            body = f"Your OTP code is: {otp}"
+            message = f"Subject: {subject}\n\n{body}"
+            server.sendmail(EMAIL_ADDRESS, email, message)
+
+        print(f"✅ OTP sent successfully to {email}")
+        return jsonify({"message": "OTP sent successfully"})
+    
+    except Exception as e:
+        print(f"❌ Error sending OTP: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/verify_otp', methods=['POST'])
+def verify_otp():
+    data = request.json
+    email = data.get("email")
+    otp = data.get("otp")
+
+    if not email or not otp:
+        return jsonify({"error": "Email and OTP are required"}), 400
+
+    if otp_storage.get(email) == otp:
+        print(f"✅ OTP verified for {email}")
+        return jsonify({"message": "OTP verified successfully"})
+    else:
+        print(f"❌ OTP verification failed for {email}")
+        return jsonify({"error": "Invalid OTP"}), 400
 #first page of app
 @app.route('/')
 def firstPage():
