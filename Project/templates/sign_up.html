@@ -39,6 +39,12 @@
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required class="input-box">
+                    <button type="button" id="send-otp" class="button">Send OTP</button>
+                </div>
+                <div class="form-group" id="otp-section" style="display: none;">
+                    <label for="otp">Enter OTP:</label>
+                    <input type="text" id="otp" name="otp" class="input-box">
+                    <button type="button" id="verify-otp" class="button">Verify OTP</button>
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
@@ -52,6 +58,89 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const sendOtpBtn = document.getElementById('send-otp');
+        const verifyOtpBtn = document.getElementById('verify-otp');
+        const signupBtn = document.querySelector('form button[type="submit"]'); // Sign Up button
+        const otpSection = document.getElementById('otp-section');
+
+        let emailInput = document.getElementById('email');
+        let otpInput = document.getElementById('otp');
+
+        let otpVerified = false; // Flag to check if OTP is verified
+
+        // 🛠️ Send OTP
+        sendOtpBtn.addEventListener('click', function () {
+            const email = emailInput.value.trim();
+            if (!email) {
+                alert("Please enter an email first.");
+                return;
+            }
+
+            console.log("Sending OTP to:", email); // Debugging log
+
+            fetch('/send_otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("OTP Response:", data); // Debugging log
+
+                if (data.message) {
+                    alert("OTP sent to your email.");
+                    otpSection.style.display = 'block';
+                } else {
+                    alert("Error sending OTP: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error("Error in fetch:", error);
+                alert("Failed to send OTP. Check console for details.");
+            });
+        });
+
+        // ✅ Verify OTP
+        verifyOtpBtn.addEventListener('click', function () {
+            const otp = otpInput.value.trim();
+            if (!otp) {
+                alert("Please enter OTP.");
+                return;
+            }
+
+            console.log("Verifying OTP:", otp); // Debugging log
+
+            fetch('/verify_otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: emailInput.value, otp: otp })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("OTP Verification Response:", data); // Debugging log
+
+                if (data.message) {
+                    alert("OTP verified successfully!");
+                    otpVerified = true;
+                } else {
+                    alert("Invalid OTP. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error in fetch:", error);
+                alert("Failed to verify OTP. Check console for details.");
+            });
+        });
+
+        // 🚫 Prevent Form Submission Without OTP Verification
+        document.querySelector("form").addEventListener("submit", function (event) {
+            if (!otpVerified) {
+                alert("Please verify OTP before signing up.");
+                event.preventDefault(); // Stop form submission
+            }
+        });
+    });
         document.addEventListener('mousemove', (e) => {
             const shapes = document.querySelectorAll('.shape');
             const x = e.clientX / window.innerWidth;
