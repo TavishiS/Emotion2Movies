@@ -16,7 +16,7 @@ MoodFlix recommends movies based on your emotions. You can:
 ## How to Run the App
 ### Prerequisites
 Before running the app, we recommend the following:
-1. Our app is built using **Python 12.8**, so other Python versions may cause compatibility issues with required packages.
+1. Our app is built using **Python 3.12.8**, so other Python versions may cause compatibility issues with required packages.
 2. Create a **separate virtual environment** and activate it. This helps manage dependencies and avoid conflicts.
 
 ### Steps to Run
