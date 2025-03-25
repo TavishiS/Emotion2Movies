@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,15 +6,18 @@
     <title>MoodFlix</title>
     <link rel="stylesheet" type="text/css" href="static/style.css">
 </head>
-
-
 <body>
     <header class="navbar">
         <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;" id="logo">
         <nav class="nav-menu">
-            <a href="/">About MoodFlix</a>
-            <a href="/home_guest">Guest Home</a>
-            <a href="/contact_us_guest">Contact Us</a>
+            <a href="/about4user">About MoodFlix</a>
+            <a href="/home_user">Home</a>
+            <a href="/prompt_input">Prompt to search</a>
+            <a href="/prompt_input_speech">Speak to search</a>
+            <a href="/form_input">Form to search</a>
+            <a href="/profile">Profile</a>
+            <a href="/contact_us_user">Contact Us</a>
+            <a style="color: red; font-weight: bold;" href="/logout">Logout</a>
         </nav>
     </header>
     <div class="container">
@@ -40,7 +43,7 @@
                 <td>b23cs1101@iitj.ac.in</td>
             </tr>
             <tr>
-                <td>Ripu Dhaman Singh</td>
+                <td>Ripu Daman Singh</td>
                 <td>b23cs1057@iitj.ac.in</td>
             </tr>
             <tr>
@@ -53,6 +56,89 @@
             </tr>
 
         </table>
+    </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - MoodFlix</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <style>
+        .contributors {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .contributor {
+            text-align: center;
+        }
+        .contributor img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #333;
+        }
+        .contributor p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <img src="static/MoodFlix_LOGO.png" alt="MoodFlix Logo" style="height: 70px; border-radius: 25px;" id="logo">
+        <nav class="nav-menu">
+            <a href="/about4user">About MoodFlix</a>
+            <a href="/home_user">Home</a>
+            <a href="/prompt_input">Prompt to search</a>
+            <a href="/prompt_input_speech">Speak to search</a>
+            <a href="/form_input">Form to search</a>
+            <a href="/profile">Profile</a>
+            <a href="/contact_us_user">Contact Us</a>
+            <a style="color: red; font-weight: bold;" href="/logout">Logout</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Meet Our Contributors</h1>
+        <p>Here are the amazing contributors who have helped build this project.</p>
+        <div class="contributors">
+            <div class="contributor">
+                <img src="static/contributors/dhruv.jpeg" alt="Dhruv Mishra">
+                <p><strong>Dhruv Mishra</strong></p>
+                <p>b23cs1090@iitj.ac.in</p>
+            </div>
+            <div class="contributor">
+                <img src="static/contributors/shreekar.jpg" alt="Shreekar">
+                <p><strong>Shreekar</strong></p>
+                <p>b23cs1069@iitj.ac.in</p>
+            </div>
+            <div class="contributor">
+                <img src="static/contributors/tavishi.jpg" alt="Tavishi Srivastava">
+                <p><strong>Tavishi Srivastava</strong></p>
+                <p>b23cs1101@iitj.ac.in</p>
+            </div>
+            <div class="contributor">
+                <img src="static/contributors/ripu.jpeg" alt="Ripu Daman Singh">
+                <p><strong>Ripu Daman Singh</strong></p>
+                <p>b23cs1057@iitj.ac.in</p>
+            </div>
+            <div class="contributor">
+                <img src="static/contributors/ekta.jpeg" alt="Ekta Saini">
+                <p><strong>Ekta Saini</strong></p>
+                <p>b23cs1018@iitj.ac.in</p>
+            </div>
+            <div class="contributor">
+                <img src="static/contributors/sanyam.jpeg" alt="Sanyam Kabra">
+                <p><strong>Sanyam Kabra</strong></p>
+                <p>b23cs1063@iitj.ac.in</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
