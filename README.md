@@ -111,5 +111,49 @@ Before running the app, we recommend the following:
 
 ---
 
+<div class="container">
+    <h1>Meet Our Contributors</h1>
+    <p>Here are the amazing contributors who have helped build this project.</p>
+    <div class="contributors" style="display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px;">
+        <div class="contributor" style="text-align: center; flex: 0 0 auto;">
+            <img src="Project/static/contributors/dhruv.jpeg" alt="Dhruv Mishra" 
+                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+            <p><strong>Dhruv Mishra</strong></p>
+            <p>b23cs1090@iitj.ac.in</p>
+        </div>
+        <div class="contributor" style="text-align: center; flex: 0 0 auto;">
+            <img src="Project/static/contributors/shreekar.jpg" alt="Shreekar" 
+                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+            <p><strong>Shreekar</strong></p>
+            <p>b23cs1069@iitj.ac.in</p>
+        </div>
+        <div class="contributor" style="text-align: center; flex: 0 0 auto;">
+            <img src="Project/static/contributors/tavishi.jpg" alt="Tavishi Srivastava" 
+                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+            <p><strong>Tavishi Srivastava</strong></p>
+            <p>b23cs1101@iitj.ac.in</p>
+        </div>
+        <div class="contributor" style="text-align: center; flex: 0 0 auto;">
+            <img src="Project/static/contributors/ripu.jpeg" alt="Ripu Daman Singh" 
+                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+            <p><strong>Ripu Daman Singh</strong></p>
+            <p>b23cs1057@iitj.ac.in</p>
+        </div>
+        <div class="contributor" style="text-align: center; flex: 0 0 auto;">
+            <img src="Project/static/contributors/ekta.jpeg" alt="Ekta Saini" 
+                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+            <p><strong>Ekta Saini</strong></p>
+            <p>b23cs1018@iitj.ac.in</p>
+        </div>
+        <div class="contributor" style="text-align: center; flex: 0 0 auto;">
+            <img src="Project/static/contributors/sanyam.jpeg" alt="Sanyam Kabra" 
+                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+            <p><strong>Sanyam Kabra</strong></p>
+            <p>b23cs1063@iitj.ac.in</p>
+        </div>
+    </div>
+</div>
+
+
 Enjoy using MoodFlix! 🎬😊
 
