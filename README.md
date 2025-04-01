@@ -3,6 +3,7 @@
 <p align="left">
   <img src="Project/static/MoodFlix_LOGO.png" alt="MoodFlix Logo" width="150">
 </p>
+Demo of our web app : https://youtu.be/X6sVRhXUgAU?feature=shared
 
 ## What We Do!
 MoodFlix recommends movies based on your emotions. You can:
