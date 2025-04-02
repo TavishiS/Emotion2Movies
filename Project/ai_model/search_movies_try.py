@@ -8,9 +8,9 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch.nn.functional as F
 
 # Constants
-WEIGHT_FAISS = 0.3
+WEIGHT_FAISS = 0.2
 WEIGHT_GENRE = 0.35
-WEIGHT_EMOTION = 0.35
+WEIGHT_EMOTION = 0.45
 MODEL_NAME = "BAAI/bge-large-en"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -69,7 +69,7 @@ emotion_labels = ["admiration", "amusement", "anger", "annoyance", "approval",
 movies, movie_dict, index, movie_ids, emotion_encodings, genre_encodings, genre_mapping, GENRE_NAMES = load_data()
 sentence_model, emotion_tokenizer, emotion_model = load_models()
 
-def search_movies(query, top_k=10):
+def search_movies(query, top_k=20):
     # Compute query text embedding
     query_embedding = sentence_model.encode([query], convert_to_numpy=True)
     

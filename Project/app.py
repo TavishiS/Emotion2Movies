@@ -287,6 +287,7 @@ def upload():
 def prompt_send_to_model():
     try :
         prompt_in = request.form.get('prompt', '')
+        prompt_in = "Movies related to :"+prompt_in
         return redirect(url_for('model_run', prompt=prompt_in))
     
     except Exception as e:
