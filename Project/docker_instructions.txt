@@ -16,3 +16,5 @@ docker start moodflix_container
 # To remove stopped container
 >> docker rm moodflix_container
 
+# To see logs of specific container named "moodflix_container"
+>> docker logs moodflix_container
