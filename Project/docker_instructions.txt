@@ -1,0 +1,18 @@
+# These are basic CLI commands to use docker for this project
+
+# To build image from current directory whose version is vX.X.X (eg. v1.2.1)
+>> docker build -t moodflix:vX.X.X . 
+
+# To make new container with name "moodflix_container" from image "moodflix:vX.X.X"
+>> docker run -d -p 5000:5000 --name moodflix_container moodflix:vX.X.X
+
+
+# To stop running container
+>> docker stop moodflix_container
+
+# To start existing container named "moodflix_container"
+docker start moodflix_container
+
+# To remove stopped container
+>> docker rm moodflix_container
+
