@@ -1,8 +1,8 @@
 from openai import OpenAI
 
-shreeKey="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"
+shreeKey="shreekars API key"
 #used by dhruv for testing
-dhruvKey = "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"
+dhruvKey = "dhruvs API key"
 
 def give5movies(prompt):
   client = OpenAI(
