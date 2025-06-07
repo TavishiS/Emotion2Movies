@@ -1,7 +1,7 @@
 import requests
 from flask import jsonify
 
-TMDB_API_KEY = "08f754591935e3223e64fe37680f7ba0"
+TMDB_API_KEY = "ripus api key"
 
 def get_movie_trailer(movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key={TMDB_API_KEY}"
